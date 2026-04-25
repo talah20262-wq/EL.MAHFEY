@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dark Network</title>
 
+<!-- 🔥 WhatsApp Preview -->
+<meta property="og:title" content="Dark Network System">
+<meta property="og:description" content="Encrypted Interface • Access Restricted • System Monitoring Active">
+<meta property="og:image" content="https://talah20262-wq.github.io/EL.MAHFEY/hacker.webp">
+<meta property="og:url" content="https://talah20262-wq.github.io/EL.MAHFEY/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
@@ -25,11 +33,10 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
     z-index:9999;
 }
 #loader img{
-    width:200px;
+    width:220px;
     animation:pulse 1.5s infinite;
 }
 @keyframes pulse{
@@ -37,7 +44,12 @@ body{
 }
 
 /* MATRIX */
-canvas{position:fixed;top:0;left:0;z-index:-1}
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
 
 /* SCREENS */
 .screen{display:none;padding:20px}
@@ -77,24 +89,14 @@ canvas{position:fixed;top:0;left:0;z-index:-1}
 .btn:hover{
     background:#0ff;
     color:black;
-}
-
-/* DENIED */
-.denied{
-    color:red;
-    font-size:40px;
-    text-align:center;
-    animation:shake .2s infinite;
-}
-@keyframes shake{
-    50%{transform:translate(-3px,3px)}
+    box-shadow:0 0 20px #0ff;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADING بالصورة -->
+<!-- LOADING -->
 <div id="loader">
     <img src="loading.png">
 </div>
@@ -115,11 +117,9 @@ canvas{position:fixed;top:0;left:0;z-index:-1}
     <a href="https://wa.me/201206561893" class="btn">CONTACT</a>
 </div>
 
-<div id="denied" class="screen denied">ACCESS DENIED</div>
-
 <script>
 
-/* SOUND */
+/* 🔊 SOUND */
 function beep(f=600,d=100){
 let ctx=new (window.AudioContext||window.webkitAudioContext)();
 let o=ctx.createOscillator();
@@ -132,7 +132,8 @@ setTimeout(()=>o.stop(),d);
 /* MATRIX */
 let c=document.getElementById("matrix");
 let ctx=c.getContext("2d");
-c.width=innerWidth;c.height=innerHeight;
+c.width=innerWidth;
+c.height=innerHeight;
 
 let letters="01XYZ".split("");
 let drops=Array(100).fill(1);
@@ -140,13 +141,14 @@ let drops=Array(100).fill(1);
 function draw(){
 ctx.fillStyle="rgba(0,0,0,.05)";
 ctx.fillRect(0,0,c.width,c.height);
+
 ctx.fillStyle="#0ff";
 
 drops.forEach((d,i)=>{
 let t=letters[Math.floor(Math.random()*letters.length)];
 ctx.fillText(t,i*10,d*10);
 
-if(d*10>c.height)drops[i]=0;
+if(d*10>c.height) drops[i]=0;
 drops[i]++;
 });
 }
@@ -175,8 +177,8 @@ let lines=[
 let i=0;
 
 function startBoot(){
-if(i<lines.length){
-document.getElementById("boot").innerHTML+=lines[i]+"<br>";
+if(i < lines.length){
+document.getElementById("boot").innerHTML += lines[i] + "<br>";
 beep();
 i++;
 setTimeout(startBoot,700);
