@@ -3,190 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Network</title>
+<title>Shadow System</title>
 
-<!-- 🔥 WhatsApp Preview -->
-<meta property="og:title" content="Dark Network System">
-<meta property="og:description" content="Encrypted Interface • Access Restricted • System Monitoring Active">
+<!-- WhatsApp Preview -->
+<meta property="og:title" content="Shadow System">
+<meta property="og:description" content="Encrypted Interface • Access Restricted">
 <meta property="og:image" content="https://talah20262-wq.github.io/EL.MAHFEY/hacker.webp">
 <meta property="og:url" content="https://talah20262-wq.github.io/EL.MAHFEY/">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
 
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
-body{
-    margin:0;
-    background:black;
-    color:#00ffcc;
-    font-family:'Share Tech Mono', monospace;
-    overflow:hidden;
-}
+body{margin:0;background:black;color:#0ff;font-family:'Share Tech Mono',monospace;overflow:hidden}
 
-/* LOADING */
-#loader{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-#loader img{
-    width:220px;
-    animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-    50%{opacity:.4}
+/* VIDEO */
+#intro{
+position:fixed;width:100%;height:100%;object-fit:cover;z-index:9999;
 }
 
 /* MATRIX */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
-}
+canvas{position:fixed;top:0;left:0;z-index:-1}
 
-/* SCREENS */
-.screen{display:none;padding:20px}
+/* SCREEN */
+.screen{display:none;text-align:center;padding:20px}
 .active{display:block}
 
 /* LOGO */
-.logo{
-    width:130px;
-    border-radius:50%;
-    box-shadow:0 0 30px #0ff;
+.logo{width:120px;border-radius:50%;box-shadow:0 0 40px #0ff}
+
+/* EYE */
+.eye{
+width:80px;height:80px;border:3px solid #0ff;border-radius:50%;
+margin:20px auto;position:relative;
+}
+.pupil{
+width:20px;height:20px;background:#0ff;border-radius:50%;
+position:absolute;top:30px;left:30px;
 }
 
-/* GLITCH */
-.glitch{
-    font-size:32px;
-    position:relative;
+/* CHAT */
+.chat{
+width:80%;margin:auto;border:1px solid #0ff;padding:10px;
+height:150px;overflow:auto;text-align:left;
 }
-.glitch::before,.glitch::after{
-    content:attr(data-text);
-    position:absolute;
-    left:0;
+
+/* CRACK */
+.crack{
+position:fixed;
+width:100%;
+height:100%;
+background:url('https://i.imgur.com/6RMhx.gif') center/cover no-repeat;
+display:none;
+z-index:999;
 }
-.glitch::before{color:red;animation:g1 .3s infinite}
-.glitch::after{color:blue;animation:g2 .3s infinite}
-@keyframes g1{50%{transform:translate(2px,-2px)}}
-@keyframes g2{50%{transform:translate(-2px,2px)}}
 
 /* BUTTON */
 .btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:10px 20px;
-    border:1px solid #0ff;
-    color:#0ff;
-    text-decoration:none;
+margin-top:15px;padding:10px 20px;border:1px solid #0ff;
+color:#0ff;text-decoration:none;display:inline-block;
 }
-.btn:hover{
-    background:#0ff;
-    color:black;
-    box-shadow:0 0 20px #0ff;
-}
+.btn:hover{background:#0ff;color:#000}
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
-<div id="loader">
-    <img src="loading.png">
-</div>
+<!-- VIDEO -->
+<video id="intro" autoplay muted>
+<source src="intro.mp4" type="video/mp4">
+</video>
+
+<!-- CRACK -->
+<div class="crack" id="crack"></div>
 
 <canvas id="matrix"></canvas>
 
-<div id="boot" class="screen active"></div>
+<div id="main" class="screen">
 
-<div id="profile" class="screen" style="text-align:center">
-    <img src="hacker.webp" class="logo">
+<img src="hacker.webp" class="logo">
 
-    <div class="glitch" data-text="DARK NETWORK">
-        DARK NETWORK
-    </div>
+<div class="eye">
+<div class="pupil" id="pupil"></div>
+</div>
 
-    <p>Encrypted System Interface</p>
+<div class="chat" id="chat"></div>
 
-    <a href="https://wa.me/201206561893" class="btn">CONTACT</a>
+<a href="https://wa.me/201206561893?text=Hello%20I%20want%20more%20info" class="btn">
+Contact
+</a>
+
 </div>
 
 <script>
 
-/* 🔊 SOUND */
-function beep(f=600,d=100){
-let ctx=new (window.AudioContext||window.webkitAudioContext)();
-let o=ctx.createOscillator();
-o.frequency.value=f;
-o.connect(ctx.destination);
-o.start();
-setTimeout(()=>o.stop(),d);
-}
+/* SOUND */
+let glitchSound=new Audio("glitch.mp3");
+
+/* VIDEO END */
+setTimeout(()=>{
+document.getElementById("intro").style.display="none";
+document.getElementById("main").classList.add("active");
+glitchSound.play();
+startChat();
+},4000);
 
 /* MATRIX */
 let c=document.getElementById("matrix");
 let ctx=c.getContext("2d");
-c.width=innerWidth;
-c.height=innerHeight;
-
+c.width=innerWidth;c.height=innerHeight;
 let letters="01XYZ".split("");
 let drops=Array(100).fill(1);
 
 function draw(){
 ctx.fillStyle="rgba(0,0,0,.05)";
 ctx.fillRect(0,0,c.width,c.height);
-
 ctx.fillStyle="#0ff";
-
 drops.forEach((d,i)=>{
 let t=letters[Math.floor(Math.random()*letters.length)];
 ctx.fillText(t,i*10,d*10);
-
-if(d*10>c.height) drops[i]=0;
+if(d*10>c.height)drops[i]=0;
 drops[i]++;
 });
 }
 setInterval(draw,33);
 
-/* SWITCH */
-function show(id){
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-}
+/* EYE TRACK */
+document.addEventListener("mousemove",e=>{
+let x=e.clientX/innerWidth*40;
+let y=e.clientY/innerHeight*40;
+pupil.style.transform=`translate(${x}px,${y}px)`;
+});
 
-/* LOADING */
-setTimeout(()=>{
-document.getElementById("loader").style.display="none";
-startBoot();
-},2500);
-
-/* BOOT */
-let lines=[
-"Initializing system...",
-"Connecting to dark nodes...",
-"Decrypting layers...",
-"Access attempt..."
+/* FAKE AI CHAT */
+let chat=document.getElementById("chat");
+let msgs=[
+"> System Online...",
+"> Scanning user...",
+"> Behavior analysis...",
+"> You are being monitored..."
 ];
 
 let i=0;
-
-function startBoot(){
-if(i < lines.length){
-document.getElementById("boot").innerHTML += lines[i] + "<br>";
-beep();
+function startChat(){
+if(i<msgs.length){
+chat.innerHTML+=msgs[i]+"<br>";
 i++;
-setTimeout(startBoot,700);
+setTimeout(startChat,1000);
 }else{
-setTimeout(()=>{
-show("profile");
-},1000);
+setTimeout(crackScreen,1500);
 }
+}
+
+/* CRACK */
+function crackScreen(){
+document.getElementById("crack").style.display="block";
+setTimeout(()=>document.getElementById("crack").style.display="none",1500);
 }
 
 </script>
