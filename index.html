@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SYSTEM</title>
+<title>Dark Network</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
@@ -16,214 +16,175 @@ body{
     overflow:hidden;
 }
 
-/* MATRIX BACKGROUND */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
-}
-
-/* BOOT SCREEN */
-#boot{
+/* LOADING */
+#loader{
     position:fixed;
     width:100%;
     height:100%;
     background:black;
-    padding:20px;
-    font-size:14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+}
+#loader img{
+    width:200px;
+    animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+    50%{opacity:.4}
 }
 
-/* TERMINAL */
-#terminal{
-    display:none;
-    padding:20px;
-    white-space:pre-line;
-}
+/* MATRIX */
+canvas{position:fixed;top:0;left:0;z-index:-1}
 
-.glow{
-    text-shadow:0 0 10px #00ffcc,0 0 30px #00ffcc;
-}
+/* SCREENS */
+.screen{display:none;padding:20px}
+.active{display:block}
 
-/* CARD */
-.card{
-    display:none;
-    text-align:center;
-    margin-top:50px;
-}
-
+/* LOGO */
 .logo{
     width:130px;
     border-radius:50%;
-    box-shadow:0 0 30px #00ffcc;
+    box-shadow:0 0 30px #0ff;
 }
 
-/* GLITCH TEXT */
+/* GLITCH */
 .glitch{
     font-size:32px;
     position:relative;
-    color:#00ffcc;
 }
-
-.glitch::before,
-.glitch::after{
+.glitch::before,.glitch::after{
     content:attr(data-text);
     position:absolute;
     left:0;
 }
-
-.glitch::before{
-    color:red;
-    animation:gl1 0.5s infinite;
-}
-
-.glitch::after{
-    color:blue;
-    animation:gl2 0.5s infinite;
-}
-
-@keyframes gl1{
-    0%{transform:translate(2px,-2px);}
-    50%{transform:translate(-2px,2px);}
-    100%{transform:translate(2px,-2px);}
-}
-
-@keyframes gl2{
-    0%{transform:translate(-2px,2px);}
-    50%{transform:translate(2px,-2px);}
-    100%{transform:translate(-2px,2px);}
-}
+.glitch::before{color:red;animation:g1 .3s infinite}
+.glitch::after{color:blue;animation:g2 .3s infinite}
+@keyframes g1{50%{transform:translate(2px,-2px)}}
+@keyframes g2{50%{transform:translate(-2px,2px)}}
 
 /* BUTTON */
 .btn{
     display:inline-block;
     margin-top:20px;
     padding:10px 20px;
-    border:1px solid #00ffcc;
-    color:#00ffcc;
+    border:1px solid #0ff;
+    color:#0ff;
     text-decoration:none;
-    transition:.3s;
 }
-
 .btn:hover{
-    background:#00ffcc;
+    background:#0ff;
     color:black;
-    box-shadow:0 0 20px #00ffcc;
 }
 
+/* DENIED */
+.denied{
+    color:red;
+    font-size:40px;
+    text-align:center;
+    animation:shake .2s infinite;
+}
+@keyframes shake{
+    50%{transform:translate(-3px,3px)}
+}
 </style>
 </head>
 
 <body>
 
+<!-- LOADING بالصورة -->
+<div id="loader">
+    <img src="loading.png">
+</div>
+
 <canvas id="matrix"></canvas>
 
-<div id="boot"></div>
+<div id="boot" class="screen active"></div>
 
-<div id="terminal"></div>
+<div id="profile" class="screen" style="text-align:center">
+    <img src="hacker.webp" class="logo">
 
-<div class="card" id="profile">
-    <img src="هكرز.webp" class="logo">
-
-    <div class="glitch" data-text="محمد أحمد نجم">
-        محمد أحمد نجم
+    <div class="glitch" data-text="DARK NETWORK">
+        DARK NETWORK
     </div>
 
-    <p>Digital Marketing | Creative Ads Specialist</p>
+    <p>Encrypted System Interface</p>
 
-    <a href="https://wa.me/201206561893" class="btn">
-        WhatsApp
-    </a>
+    <a href="https://wa.me/201206561893" class="btn">CONTACT</a>
 </div>
+
+<div id="denied" class="screen denied">ACCESS DENIED</div>
 
 <script>
 
-/* MATRIX EFFECT */
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
+/* SOUND */
+function beep(f=600,d=100){
+let ctx=new (window.AudioContext||window.webkitAudioContext)();
+let o=ctx.createOscillator();
+o.frequency.value=f;
+o.connect(ctx.destination);
+o.start();
+setTimeout(()=>o.stop(),d);
+}
 
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+/* MATRIX */
+let c=document.getElementById("matrix");
+let ctx=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
 
-let letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-letters = letters.split("");
-
-let fontSize = 14;
-let columns = canvas.width / fontSize;
-
-let drops = [];
-for(let i=0;i<columns;i++) drops[i]=1;
+let letters="01XYZ".split("");
+let drops=Array(100).fill(1);
 
 function draw(){
-    ctx.fillStyle="rgba(0,0,0,0.05)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="rgba(0,0,0,.05)";
+ctx.fillRect(0,0,c.width,c.height);
+ctx.fillStyle="#0ff";
 
-    ctx.fillStyle="#00ffcc";
-    ctx.font = fontSize+"px monospace";
+drops.forEach((d,i)=>{
+let t=letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(t,i*10,d*10);
 
-    for(let i=0;i<drops.length;i++){
-        let text = letters[Math.floor(Math.random()*letters.length)];
-        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-
-        if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
-            drops[i]=0;
-
-        drops[i]++;
-    }
+if(d*10>c.height)drops[i]=0;
+drops[i]++;
+});
 }
-
 setInterval(draw,33);
 
-/* BOOT TEXT */
-const bootText = [
+/* SWITCH */
+function show(id){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+}
+
+/* LOADING */
+setTimeout(()=>{
+document.getElementById("loader").style.display="none";
+startBoot();
+},2500);
+
+/* BOOT */
+let lines=[
 "Initializing system...",
-"Bypassing firewall...",
-"Connecting to secure server...",
-"Decrypting data...",
-"Access granted ✔"
+"Connecting to dark nodes...",
+"Decrypting layers...",
+"Access attempt..."
 ];
 
-let i = 0;
-let bootDiv = document.getElementById("boot");
+let i=0;
 
-function bootSequence(){
-    if(i < bootText.length){
-        bootDiv.innerHTML += bootText[i] + "\n";
-        i++;
-        setTimeout(bootSequence,800);
-    }else{
-        setTimeout(showTerminal,1000);
-    }
+function startBoot(){
+if(i<lines.length){
+document.getElementById("boot").innerHTML+=lines[i]+"<br>";
+beep();
+i++;
+setTimeout(startBoot,700);
+}else{
+setTimeout(()=>{
+show("profile");
+},1000);
 }
-
-bootSequence();
-
-/* TERMINAL */
-function showTerminal(){
-    bootDiv.style.display="none";
-    const terminal = document.getElementById("terminal");
-    terminal.style.display="block";
-
-    let text = ">> System Connected...\n>> Loading Profile...\n>> Welcome Mohamed...\n";
-    let j=0;
-
-    function type(){
-        if(j < text.length){
-            terminal.innerHTML += text.charAt(j);
-            j++;
-            setTimeout(type,30);
-        }else{
-            setTimeout(showProfile,1000);
-        }
-    }
-
-    type();
-}
-
-/* SHOW PROFILE */
-function showProfile(){
-    document.getElementById("terminal").style.display="none";
-    document.getElementById("profile").style.display="block";
 }
 
 </script>
